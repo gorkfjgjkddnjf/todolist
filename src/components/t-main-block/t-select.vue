@@ -53,7 +53,6 @@ export default {
         noVisible(){
             this.isOptionVisible = !this.isOptionVisible
             this.$emit('isvisble', this.isOptionVisible)
-            //console.log(this.isOptionVisible) 
         }
     },
 
