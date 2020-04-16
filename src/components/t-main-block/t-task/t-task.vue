@@ -8,11 +8,18 @@
             <p>Вместе с задачей будут удалены все подзадачи</p>
         </popup>
 
-        <popup v-if="isVisiblePopup" @closePopup="closePopup" :index="index1" btnOk="Удалить">
+        <popup v-if="isCreateTaskVisible" @closePopup="closePopup" @deleteItem="newTaskAdd" btnOk="Сохранить">
             <template v-slot:head>
-                <h2 class="tt">Вы действительно хотите удалить "{{todos[index1].title}}"</h2>
+                <h2 class="tt">Добавление задачи</h2>
             </template>
-            <p>Вместе с задачей будут удалены все подзадачи</p>
+            <div class="form-group text-left mx-md-4">
+                <label for="title">Название</label> 
+                <input type="text" name="title" class="form-control form-control-lg" id="title" required v-model="newTask">
+            </div>
+            <div class="form-group text-left mx-md-4">
+               <label for="description">Краткое описание</label>
+               <textarea class="form-control form-control-lg" name="description" id="description" cols="30" rows="2" required v-model="newDescription"></textarea>
+            </div>
         </popup>
 
 
@@ -23,27 +30,29 @@
             @select="optionSelected"
             :selected="selectedTASK"
             @sorted="sorted"
+            @addTodo="addTodo"
             />
         </div>
        
         <div class="todo-item" v-for="(todo, index) in todos" :key="todo.id" @click="showSubTask(index)">               
             <div class="todo-item-left">
                 <div class="check"></div>
-                <p v-if="!todo.editing" class="ml-4 mb-0 py-2 todo-item-label">{{todo.title}}</p>
-                <input v-else class="todo-item-edit ml-4 py-3" type="text" 
+                <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.title}}</p>
+                <input v-else class="todo-item-edit ml-2 py-3" type="text" 
                     v-model="todo.title" 
                     @blur="doneEdit(todo)"
                     @keyup.enter="doneEdit(todo)"
+                    @keyup.esc="cancelEdit(todo)"
                     v-focus>
             </div>
             <div class="edit-icon">
                 <i class="material-icons shedule" >schedule</i>
+                <p class="mb-0 date px-2">{{todo.date}}</p>
                 <i class="material-icons edit" @click="editTodoItem(todo)">edit</i>
                 <i class="material-icons close" @click="confirmDeleteItem(index)">close</i>
             </div>
         </div>
     </div>
-        <i class="material-icons shedule" @click="addTodo">add</i>
         <subtask :todos="todos" v-if="isVisibleSubTask" :index3="index1" :subtask="subtask"/></div> 
 </template>
 
@@ -65,13 +74,15 @@ export default {
             index1: 0,
             subtask:[],
             isVisibleSubTask: false,
-            newTask: '',
+            newTask: null,
+            newDescription: null,
             options:[
                 {name: 'Все задачи', value:1},
                 {name: 'Исполненные', value:2},
                 {name: 'Не исполненные', value:3},
             ],
             isVisiblePopup: false,
+            isCreateTaskVisible: false,
             selectedTASK: 'Все',
             todos:[
                 {
@@ -79,16 +90,19 @@ export default {
                     'title': 'Купить молоко',
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'editing': false,
+                    'date': '16.04.2020, 20:47:30',
                     'subtask':[
                         {
                             'id':1,
                             'title': 'Купить 1',
                             'editing': false,
+                            'date': '16.04.2020, 20:47:30',
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
+                            'date': '16.04.2020, 20:47:30',
                         }
                     ]
                 },
@@ -97,16 +111,19 @@ export default {
                     'title': 'Пойти на работу',
                     'editing': false,
                     'description': 'uighrg iuerw  uiergyhoe',
+                    'date': '16.04.2020, 20:47:30',
                     'subtask':[
                         {
                             'id':1,
                             'title': 'Купить 1',
                             'editing': false,
+                            'date': '16.04.2020, 20:47:30',
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
+                            'date': '16.04.2020, 20:47:30',
                         }
                     ]
                 },
@@ -115,6 +132,7 @@ export default {
                     'title': 'А Пойти на работу 1',
                     'editing': false,
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
+                    'date': '16.04.2020, 20:47:30',
                     'subtask':[
 
                     ]
@@ -140,6 +158,9 @@ export default {
         doneEdit(todo){
             todo.editing = false
         },
+        cancelEdit(todo){
+            todo.title = this.beforeEdit
+        },
         removeTodoItem(index){
             this.todos.splice(index,1)
             this.isVisiblePopup = false
@@ -150,6 +171,7 @@ export default {
         },
         closePopup(){
             this.isVisiblePopup = false
+            this.isCreateTaskVisible = false
         },
         showSubTask(index){
             this.isVisibleSubTask = true
@@ -168,7 +190,24 @@ export default {
             })
         },
         addTodo(){
+            this.isCreateTaskVisible = true
+        },
+        newTaskAdd(){
 
+            if(this.newTask.trim().length == 0 || this.newDescription.trim().length == 0){
+                return
+            }
+            this.todos.push({
+                id: 1,
+                title: this.newTask,
+                editing: false,
+                description: this.newDescription,
+                date: new Date().toLocaleString(),
+                subtask: []
+            })
+            this.newTask = null
+            this.newDescription = null
+            this.isCreateTaskVisible = false
         }
     },
     mounted(){
@@ -181,18 +220,6 @@ export default {
             }
             return 0
         })  
-        var now = new Date().toLocaleString();
-        console.log(now)
-        let dno = new Date()
-        let day = dno.getDate();
-        let month = dno.getMonth();
-        let year = dno.getFullYear();
-        let hourse = dno.getHours()
-        let min = dno.getMinutes()
-        console.log(day, month, year, hourse, min)
-        let currentDate = day+'.'+ month +'.' + year +' ' + hourse +':' + min
-        console.log(currentDate)
-
     }
 }
 </script>
@@ -249,5 +276,8 @@ export default {
     width: 10px
     background: red
     height: 41px
+
+.date
+    color: #c4c4c4
 
 </style>

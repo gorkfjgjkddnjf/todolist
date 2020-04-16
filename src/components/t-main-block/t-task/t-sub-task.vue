@@ -7,15 +7,32 @@
             </template>
         </popup>
 
+        <popup v-if="isCreateTaskVisible" @closePopup="closePopup" @deleteItem="newTaskAdd" btnOk="Сохранить">
+            <template v-slot:head>
+                <h2 class="tt">Добавление подзадачи</h2>
+            </template>
+            <div class="form-group text-left mx-md-4">
+                <label for="title">Название</label> 
+                <input type="text" name="title" class="form-control form-control-lg" id="title" required v-model="newSubTask">
+            </div>
+            <div class="row justify-content-center"> <!-- Тут срочность в виде чекбоксов-->
+                
+            </div>
+        </popup>
+
         <div class="main-section">
             <div class="head-sub-task text-center py-2">
                {{todos[index3].title}}
         </div>
         <div class=" mb-0 description">
             <textarea class="form-control-lg w-100 mt-2" @keyup="textarea()" v-model="todos[index3].description" id="decription" placeholder="краткое описание..." ></textarea>
-        </div>   
-        <tSelect :selected="selected" @isvisble="isvisble1">  
-        </tSelect >       
+        </div>  
+
+        <tSelect 
+        :selected="selected"
+        @isvisble="isvisble1"
+        @addTodo="addTodo"/>  
+    
         <div class="sub" v-if="isVisible">
             <div class="todo-item" v-for="(task, index) in subtask" :key="task.id">               
                 <div class="todo-item-left">
@@ -28,7 +45,9 @@
                     v-focus>
                 </div>
                 <div class="edit-icon">
-                    <i class="material-icons shedule" >schedule</i>
+                    <i class="material-icons shedule">schedule</i>
+                    <p class="mb-0 date px-2">{{task.date}}</p>
+                    <i class="material-icons">flag</i>
                     <i class="material-icons edit" @click="editTodoItem(task)">edit</i>
                     <i class="material-icons close" @click="confirmDeleteItem(index)">close</i>
                 </div>
@@ -54,7 +73,9 @@ export default {
             selected: 'Подзадачи',
             isVisible: false,
             isVisiblePopup: false,
-            index4: 0
+            index4: 0,
+            isCreateTaskVisible: false,
+            newSubTask: null,
         }
     },
     props:{
@@ -98,7 +119,6 @@ export default {
         },
         editTodoItem(task){
             task.editing = true
-            console.log(task.completed) 
         },
         doneEdit(todo){
             todo.editing = false
@@ -113,10 +133,28 @@ export default {
         },
         closePopup(){
             this.isVisiblePopup = false
+            this.isCreateTaskVisible = false
         },
+        addTodo(){
+            this.isCreateTaskVisible = true
+        },
+        newTaskAdd(){
+
+            if(this.newSubTask.trim().length == 0){
+                return
+            }
+            this.subtask.push({
+                id: 1,
+                title: this.newSubTask,
+                editing: false,
+                date: new Date().toLocaleString(),
+            })
+            this.newSubTask = null
+            this.isCreateTaskVisible = false
+        }
         // checkSubTask(){
         //     let color = ""
-        //     if(this.subtask.lenght === 0){
+        //     if(this.subtask.length === 0){
         //         color = "white"
         //     }
         //     else{
@@ -173,4 +211,17 @@ export default {
 .shedule
     color: grey
 
+
+#no-select
+#not-important
+    color: #51C36A
+#important
+    color: #ECDD57
+#fast-no-important
+    color: #46AAE2
+#fast-important
+    color: #C74B4B
+
+.flag
+    display: flex
 </style>
