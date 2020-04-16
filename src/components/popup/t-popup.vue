@@ -1,5 +1,6 @@
 <template>
-    <div class="t-popup shadow col-11 col-md-10">
+
+        <div class="t-popup shadow col-11 col-md-10">
         <div class="popup-head text-center mb-4 pt-3">
             <slot name="head"></slot>
         </div>
@@ -14,6 +15,7 @@
                 <button class="btn w-100" id="Yes" @click="deleteItem(index)">{{btnOk}}</button>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -66,7 +68,17 @@ export default {
 .t-popup
     background: #ffffff
     border-radius: 15px
+    position: absolute
+    right: 0
+    left: 0
+    top: 0
+    bottom: 0
 
-
+.popup-wrapper
+    position: absolute
+    right: 0
+    left: 0
+    top: 0
+    bottom: 0
 
 </style>

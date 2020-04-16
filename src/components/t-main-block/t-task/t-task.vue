@@ -8,8 +8,16 @@
             <p>Вместе с задачей будут удалены все подзадачи</p>
         </popup>
 
+        <popup v-if="isVisiblePopup" @closePopup="closePopup" :index="index1" btnOk="Удалить">
+            <template v-slot:head>
+                <h2 class="tt">Вы действительно хотите удалить "{{todos[index1].title}}"</h2>
+            </template>
+            <p>Вместе с задачей будут удалены все подзадачи</p>
+        </popup>
 
-        <div class="select">
+
+        <div class="main-section">
+            <div class="select">
             <t-select
             :options="options"
             @select="optionSelected"
@@ -34,9 +42,9 @@
                 <i class="material-icons close" @click="confirmDeleteItem(index)">close</i>
             </div>
         </div>
-        <subtask :todos="todos" v-if="isVisibleSubTask" :index3="index1" :subtask="subtask"/> 
     </div>
-
+        <i class="material-icons shedule" @click="addTodo">add</i>
+        <subtask :todos="todos" v-if="isVisibleSubTask" :index3="index1" :subtask="subtask"/></div> 
 </template>
 
 <script>
@@ -57,6 +65,7 @@ export default {
             index1: 0,
             subtask:[],
             isVisibleSubTask: false,
+            newTask: '',
             options:[
                 {name: 'Все задачи', value:1},
                 {name: 'Исполненные', value:2},
@@ -157,6 +166,9 @@ export default {
                 }
                 return 0
             })
+        },
+        addTodo(){
+
         }
     },
     mounted(){
@@ -168,14 +180,26 @@ export default {
                 return -1
             }
             return 0
-        })        
+        })  
+        var now = new Date().toLocaleString();
+        console.log(now)
+        let dno = new Date()
+        let day = dno.getDate();
+        let month = dno.getMonth();
+        let year = dno.getFullYear();
+        let hourse = dno.getHours()
+        let min = dno.getMinutes()
+        console.log(day, month, year, hourse, min)
+        let currentDate = day+'.'+ month +'.' + year +' ' + hourse +':' + min
+        console.log(currentDate)
+
     }
 }
 </script>
 
 
 <style lang="sass">
-.t-task
+.main-section
     background: #F8F8F8
 
 .select

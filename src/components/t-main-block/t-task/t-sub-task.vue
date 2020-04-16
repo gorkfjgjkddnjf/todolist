@@ -1,6 +1,14 @@
 <template>
     <div class="t-sub-task">
-        <div class="head-sub-task text-center py-2" @click="checkSubTask">
+
+        <popup v-if="isVisiblePopup" @closePopup="closePopup" @deleteItem="removeTodoItem" :index="index4" btnOk="Удалить">
+            <template v-slot:head>
+                <h2 class="tt">Вы действительно хотите удалить "{{subtask[index4].title}}" из списка "{{todos[index3].title}}"</h2>
+            </template>
+        </popup>
+
+        <div class="main-section">
+            <div class="head-sub-task text-center py-2">
                {{todos[index3].title}}
         </div>
         <div class=" mb-0 description">
@@ -22,9 +30,10 @@
                 <div class="edit-icon">
                     <i class="material-icons shedule" >schedule</i>
                     <i class="material-icons edit" @click="editTodoItem(task)">edit</i>
-                    <i class="material-icons close" @click="removeTodoItem(index)">close</i>
+                    <i class="material-icons close" @click="confirmDeleteItem(index)">close</i>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -32,16 +41,20 @@
 <script>
 
 import tSelect from '../t-select'
+import popup from '../../popup/t-popup'
 
 export default {
     name: "t-sub-task",
     components: {
-        tSelect
+        tSelect,
+        popup
         },
     data(){
         return {
             selected: 'Подзадачи',
             isVisible: false,
+            isVisiblePopup: false,
+            index4: 0
         }
     },
     props:{
@@ -60,7 +73,9 @@ export default {
             default(){
                 return[]
             }
-        }
+        },
+        
+
     },
     directives:{
         focus:{
@@ -90,28 +105,38 @@ export default {
         },
         removeTodoItem(index){
             this.subtask.splice(index, 1)
+            this.isVisiblePopup = false
         },
-        checkSubTask(){
-            let color = ""
-            if(this.subtask.lenght === 0){
-                color = "white"
-            }
-            else{
-                this.subtask.map(function(){
-                    if(task.completed != undefined || task.completed == false){
-                        color = "green"
-                    }
-                    else{
-                        color = "grey"
-                    }
-                })
-            }
-            console.log(color)
-            console.log(this.subtask.length) 
-            this.$emit('changeColor', color)
-        }
+        confirmDeleteItem(index){
+            this.isVisiblePopup = true
+            this.index4 = index
+        },
+        closePopup(){
+            this.isVisiblePopup = false
+        },
+        // checkSubTask(){
+        //     let color = ""
+        //     if(this.subtask.lenght === 0){
+        //         color = "white"
+        //     }
+        //     else{
+        //         this.subtask.map(function(){
+        //             if(task.completed != undefined || task.completed == false){
+        //                 color = "green"
+        //             }
+        //             else{
+        //                 color = "grey"
+        //             }
+        //         })
+        //     }
+        //     console.log(color)
+        //     console.log(this.subtask.length) 
+        //     this.$emit('changeColor', color)
+        // }
 
-    },   
+    },
+
+  
 }
 </script>
 
@@ -147,8 +172,5 @@ export default {
 
 .shedule
     color: grey
-
-.t-sub-task-item
-    background: #F8F8F8
 
 </style>
