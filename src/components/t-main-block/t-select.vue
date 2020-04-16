@@ -4,7 +4,7 @@
             <p @click="noVisible" class="py-2 mb-0">{{selected}}</p>            
             <i class="material-icons icon" v-if="!isOptionVisible" @click="noVisible">keyboard_arrow_down</i>
             <i class="material-icons icon" v-else @click="noVisible">keyboard_arrow_up</i>
-            <i class="material-icons icon" id="sort">sort_by_alpha</i>
+            <i class="material-icons icon" id="sort" @click="sorted">sort_by_alpha</i>
         </div>
         <div class="options" v-if="isOptionVisible">
             <div class="pl-4 option"                 
@@ -53,6 +53,9 @@ export default {
         noVisible(){
             this.isOptionVisible = !this.isOptionVisible
             this.$emit('isvisble', this.isOptionVisible)
+        },
+        sorted(){
+            this.$emit('sorted')
         }
     },
 
