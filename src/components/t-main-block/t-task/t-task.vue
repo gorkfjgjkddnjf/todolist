@@ -2,9 +2,9 @@
     <div class="t-task px-0">
 
 
-        <push>
+        <!-- <push>
             Задача "{{todos[index1].title}}" успешно {{}}
-        </push>
+        </push> -->
         
 
 
@@ -43,7 +43,7 @@
        
         <div class="todo-item" v-for="(todo, index) in todos" :key="todo.id" @click="showSubTask(index)">               
             <div class="todo-item-left">
-                <div class="check" :class="{status : todo.color}"></div>
+                <div class="check" :class="{grey : color == 'grey', green: color == 'green'}"></div>
                 <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.title}}</p>
                 <input v-else class="todo-item-edit ml-2 py-3" type="text"
                     v-model="todo.title" 
@@ -65,6 +65,7 @@
         :index3="index1" 
         :subtask="subtask"
         @changeColor="changeColorTask"
+    
         />
     </div> 
 </template>
@@ -74,7 +75,7 @@
 import tSelect from '../t-select'
 import subtask from '../t-task/t-sub-task'
 import popup from '../../popup/t-popup'
-import push from '../../push/push'
+//import push from '../../push/push'
 
 export default {
     name: "t-task",
@@ -82,7 +83,7 @@ export default {
         tSelect,
         subtask,
         popup,
-        push
+        //push
     },
     data(){
         return {
@@ -91,6 +92,7 @@ export default {
             isVisibleSubTask: false,
             newTask: null,
             newDescription: null,
+            color: 'white',
             options:[
                 {name: 'Все задачи', value:1},
                 {name: 'Исполненные', value:2},
@@ -111,7 +113,6 @@ export default {
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'editing': false,
                     'date': '16.04.2020, 20:47:30',
-                    'color': false,
                     'subtask':[
                         {
                             'id':1,
@@ -135,7 +136,6 @@ export default {
                     'editing': false,
                     'description': 'uighrg iuerw  uiergyhoe',
                     'date': '16.04.2020, 20:47:30',
-                    'color': false,
                     'subtask':[
                         {
                             'id':1,
@@ -159,7 +159,7 @@ export default {
                     'editing': false,
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'date': '16.04.2020, 20:47:30',
-                    'color': false,
+
                     'subtask':[
 
                     ]
@@ -234,15 +234,16 @@ export default {
                 editing: false,
                 description: this.newDescription,
                 date: new Date().toLocaleString(),
-                color: 'white',
                 subtask: []
             })
             this.newTask = null
             this.newDescription = null
             this.isCreateTaskVisible = false
         },
-        changeColorTask(color){
-            console.log(color)
+        changeColorTask(color, index3){
+            console.log(color, index3)
+            this.color = color
+            console.log(this.color)
         }
     },
     mounted(){
@@ -310,11 +311,15 @@ export default {
 .check
     width: 10px
     height: 41px
+    background: white
 
 .date
     color: #c4c4c4
 
-.status
-    background: white
+.grey
+    background: grey !important
+
+.green
+    background: green !important
 
 </style>

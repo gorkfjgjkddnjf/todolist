@@ -178,7 +178,7 @@ export default {
                     color = "grey"
                 }
             }
-            this.$emit('changeColor', color)
+            this.$emit('changeColor', color, this.index3)
         },
 
     },
