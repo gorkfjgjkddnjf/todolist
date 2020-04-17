@@ -97,12 +97,14 @@ export default {
                             'title': 'Купить 1',
                             'editing': false,
                             'date': '16.04.2020, 20:47:30',
+                            'fast': false
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
                             'date': '16.04.2020, 20:47:30',
+                            'fast': false
                         }
                     ]
                 },
@@ -118,12 +120,14 @@ export default {
                             'title': 'Купить 1',
                             'editing': false,
                             'date': '16.04.2020, 20:47:30',
+                            'fast': false
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
                             'date': '16.04.2020, 20:47:30',
+                            'fast': false
                         }
                     ]
                 },
@@ -131,7 +135,7 @@ export default {
                     'id': 3,
                     'title': 'А Пойти на работу 1',
                     'editing': false,
-                    'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
+                    'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'date': '16.04.2020, 20:47:30',
                     'subtask':[
 
@@ -193,12 +197,12 @@ export default {
             this.isCreateTaskVisible = true
         },
         newTaskAdd(){
-
+            let idNewTask = this.todos.length
             if(this.newTask.trim().length == 0 || this.newDescription.trim().length == 0){
                 return
             }
             this.todos.push({
-                id: 1,
+                id: idNewTask + 1,
                 title: this.newTask,
                 editing: false,
                 description: this.newDescription,

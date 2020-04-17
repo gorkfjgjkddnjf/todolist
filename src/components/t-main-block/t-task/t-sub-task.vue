@@ -15,12 +15,13 @@
                 <label for="title">Название</label> 
                 <input type="text" name="title" class="form-control form-control-lg" id="title" required v-model="newSubTask">
             </div>
-            <div class="row justify-content-center"> <!-- Тут срочность в виде чекбоксов-->
-                
+            <div class="form-group text-left mx-md-4">
+                <input type="checkbox" name="fast" id="fast">
+                <label for="fast" class="pl-2">Это срочно?</label> 
             </div>
         </popup>
 
-        <div class="main-section">
+        <div class="main-section" @click="checkSubTask">
             <div class="head-sub-task text-center py-2">
                {{todos[index3].title}}
         </div>
@@ -28,7 +29,7 @@
             <textarea class="form-control-lg w-100 mt-2" @keyup="textarea()" v-model="todos[index3].description" id="decription" placeholder="краткое описание..." ></textarea>
         </div>  
 
-        <tSelect 
+        <tSelect  
         :selected="selected"
         @isvisble="isvisble1"
         @addTodo="addTodo"/>  
@@ -47,7 +48,7 @@
                 <div class="edit-icon">
                     <i class="material-icons shedule">schedule</i>
                     <p class="mb-0 date px-2">{{task.date}}</p>
-                    <i class="material-icons">flag</i>
+                    <i class="material-icons" v-if="task.fast">flag</i>
                     <i class="material-icons edit" @click="editTodoItem(task)">edit</i>
                     <i class="material-icons close" @click="confirmDeleteItem(index)">close</i>
                 </div>
@@ -139,38 +140,47 @@ export default {
             this.isCreateTaskVisible = true
         },
         newTaskAdd(){
-
+            let idNewTask = this.subtask.length
+            let checkbox = document.querySelector('#fast')
+            let urgency = false
             if(this.newSubTask.trim().length == 0){
                 return
             }
+            if(checkbox.checked){
+                urgency = true
+            }
             this.subtask.push({
-                id: 1,
+                id: idNewTask + 1,
                 title: this.newSubTask,
                 editing: false,
                 date: new Date().toLocaleString(),
+                fast: urgency
             })
             this.newSubTask = null
             this.isCreateTaskVisible = false
-        }
-        // checkSubTask(){
-        //     let color = ""
-        //     if(this.subtask.length === 0){
-        //         color = "white"
-        //     }
-        //     else{
-        //         this.subtask.map(function(){
-        //             if(task.completed != undefined || task.completed == false){
-        //                 color = "green"
-        //             }
-        //             else{
-        //                 color = "grey"
-        //             }
-        //         })
-        //     }
-        //     console.log(color)
-        //     console.log(this.subtask.length) 
-        //     this.$emit('changeColor', color)
-        // }
+        },
+        checkSubTask(){
+            let color = ""
+            let checkbox = document.querySelector('input[type=checkbox]')
+            if(this.subtask.length == 0){
+                color = "white"
+            }
+            else{
+                this.subtask.map(function(task){
+                    if(!checkbox.checked){
+                        color = "green"
+                        return
+                    }
+                    else{
+                        color = "grey"
+                        console.log(task.completed)
+                    }
+                })
+            }
+            console.log(color)
+            console.log(this.subtask.length) 
+            this.$emit('changeColor', color)
+        },
 
     },
 
