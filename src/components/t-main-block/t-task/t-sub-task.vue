@@ -21,8 +21,8 @@
             </div>
         </popup>
 
-        <div class="main-section" @click="checkSubTask">
-            <div class="head-sub-task text-center py-2">
+        <div class="main-section" >
+            <div class="head-sub-task text-center py-2" @click="checkSubTask">
                {{todos[index3].title}}
         </div>
         <div class=" mb-0 description">
