@@ -1,6 +1,13 @@
 <template>
     <div class="t-task px-0">
 
+
+        <push>
+            Задача "{{todos[index1].title}}" успешно {{}}
+        </push>
+        
+
+
         <popup v-if="isVisiblePopup" @closePopup="closePopup" @deleteItem="removeTodoItem" :index="index1" btnOk="Удалить">
             <template v-slot:head>
                 <h2 class="tt">Вы действительно хотите удалить "{{todos[index1].title}}"</h2>
@@ -36,9 +43,9 @@
        
         <div class="todo-item" v-for="(todo, index) in todos" :key="todo.id" @click="showSubTask(index)">               
             <div class="todo-item-left">
-                <div class="check"></div>
+                <div class="check" :class="{status : todo.color}"></div>
                 <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.title}}</p>
-                <input v-else class="todo-item-edit ml-2 py-3" type="text" 
+                <input v-else class="todo-item-edit ml-2 py-3" type="text"
                     v-model="todo.title" 
                     @blur="doneEdit(todo)"
                     @keyup.enter="doneEdit(todo)"
@@ -53,7 +60,13 @@
             </div>
         </div>
     </div>
-        <subtask :todos="todos" v-if="isVisibleSubTask" :index3="index1" :subtask="subtask"/></div> 
+        <subtask :todos="todos" 
+        v-if="isVisibleSubTask" 
+        :index3="index1" 
+        :subtask="subtask"
+        @changeColor="changeColorTask"
+        />
+    </div> 
 </template>
 
 <script>
@@ -61,13 +74,15 @@
 import tSelect from '../t-select'
 import subtask from '../t-task/t-sub-task'
 import popup from '../../popup/t-popup'
+import push from '../../push/push'
 
 export default {
     name: "t-task",
     components: {
         tSelect,
         subtask,
-        popup
+        popup,
+        push
     },
     data(){
         return {
@@ -81,6 +96,11 @@ export default {
                 {name: 'Исполненные', value:2},
                 {name: 'Не исполненные', value:3},
             ],
+            messages:[
+                {title: 'Добавлена', id: 1},
+                {title: 'Удалена', id: 2},
+                {title: 'Изменения успешно сохранены', id: 3}
+            ],
             isVisiblePopup: false,
             isCreateTaskVisible: false,
             selectedTASK: 'Все',
@@ -91,6 +111,7 @@ export default {
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'editing': false,
                     'date': '16.04.2020, 20:47:30',
+                    'color': false,
                     'subtask':[
                         {
                             'id':1,
@@ -114,6 +135,7 @@ export default {
                     'editing': false,
                     'description': 'uighrg iuerw  uiergyhoe',
                     'date': '16.04.2020, 20:47:30',
+                    'color': false,
                     'subtask':[
                         {
                             'id':1,
@@ -137,6 +159,7 @@ export default {
                     'editing': false,
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'date': '16.04.2020, 20:47:30',
+                    'color': false,
                     'subtask':[
 
                     ]
@@ -151,7 +174,11 @@ export default {
             }
         }
     },
-    computed: {},
+    computed: {
+        // color(){
+        //     return {'background':'red'}
+        // }
+    },
     methods:{
         optionSelected(option){
             this.selectedTASK = option.name
@@ -207,11 +234,15 @@ export default {
                 editing: false,
                 description: this.newDescription,
                 date: new Date().toLocaleString(),
+                color: 'white',
                 subtask: []
             })
             this.newTask = null
             this.newDescription = null
             this.isCreateTaskVisible = false
+        },
+        changeColorTask(color){
+            console.log(color)
         }
     },
     mounted(){
@@ -278,10 +309,12 @@ export default {
 
 .check
     width: 10px
-    background: red
     height: 41px
 
 .date
     color: #c4c4c4
+
+.status
+    background: white
 
 </style>
