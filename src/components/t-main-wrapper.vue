@@ -1,5 +1,6 @@
 <template>
     <div class="t-main-wrapper">
+        <tHeader/>
         <keep-alive>
             <router-view />
         </keep-alive>
@@ -8,10 +9,13 @@
 </template>
 
 <script>
+import tHeader from './t-sign/t-header/t-header';
 
 export default {
     name: "t-main-wrapper",
-    components: {},
+    components: {
+        tHeader
+    },
     data(){
         return {}
     },
