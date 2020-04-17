@@ -182,6 +182,9 @@ export default {
         },
 
     },
+    mounted(){
+        this.checkSubTask()
+    }
 
   
 }

@@ -61,7 +61,7 @@
         </div>
     </div>
         <subtask :todos="todos" 
-        v-if="isVisibleSubTask" 
+        v-show="isVisibleSubTask" 
         :index3="index1" 
         :subtask="subtask"
         @changeColor="changeColorTask"
