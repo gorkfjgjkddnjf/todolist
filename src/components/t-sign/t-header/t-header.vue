@@ -2,7 +2,7 @@
     <header class="nav-bar">
         <div class="nav-bar__text justify-content-space-between">
             <h2 class="nav-bar__title">
-                ToDolist
+                T<img src="../../../images/header-check.png" alt="header check">Dolist
             </h2>
         </div>
     </header>
