@@ -12,11 +12,13 @@
             </div>
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
-                <input type="password" name="pass" class="form-control form-control-lg" id="pass" required>
+                <input v-bind:type="password" name="pass" class="form-control form-control-lg t-sign-up-item__eye" id="pass" required>
+                <span class="t-sign-up-item__span" v-on:click="type"></span>
             </div>
             <div class="form-group col-12">
                 <label for="confirm-pass">Подтвердите пароль</label> 
-                <input type="password" name="confirm-pass" class="form-control form-control-lg" id="confirm-pass" required>
+                <input v-bind:type="password" name="confirm-pass" class="form-control form-control-lg t-sign-up-item__eye" id="confirm-pass" required>
+                <span class="t-sign-up-item__span" v-on:click="type"></span>
             </div>
             <div class="row justify-content-center mx-0 link">
                 <p class="mb-0">Нажимая "Регистрация" Вы соглашаетесь с</p>
@@ -39,14 +41,24 @@
 </template>
 
 <script>
-
+// let k = 0;
 export default {
     name: "t-sign-up-item",
     components: {},
     data(){
-        return {}
+        return {password: 'password'}
     },
-    computed: {}
+    computed: {},
+    methods: {
+        type(){
+            if (this.password === "password"){
+                this.password = "text";
+            }
+            else{
+                this.password = "password";
+            }
+        }
+    }
 }
 </script>
 
@@ -55,5 +67,13 @@ export default {
     .t-sign-up-item
         &__hr
             border: 1px solid #C4C4C4;
-
+        &__eye
+            position: relative;
+        &__span
+            position: absolute
+            background: url('../../../images/eye-inline.png') no-repeat;
+            width: 31px;
+            height: 27px;
+            top: 50%;
+            right: 30px;
 </style>

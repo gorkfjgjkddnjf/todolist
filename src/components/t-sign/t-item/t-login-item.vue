@@ -8,7 +8,8 @@
             </div>
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
-                <input type="password" name="pass" class="form-control form-control-lg" id="pass" required>
+                <input v-bind:type="password" name="pass" class="form-control form-control-lg t-login-item__eye" id="pass" required>
+                <span class="t-login-item__span" v-on:click="type"></span>
                 <small v-show="valid" class="invalid-login">Неверный логин или пароль</small>
             </div>
             <div class="form-group col-12">
@@ -36,7 +37,7 @@
         name: "t-login-item",
         components: {},
         data() {
-            return {}
+            return {password: 'password'}
         },
         computed: {
             valid(){
@@ -44,7 +45,14 @@
             }
         },
         methods:{
-
+            type(){
+                if (this.password === "password"){
+                    this.password = "text";
+                }
+                else{
+                    this.password = "password";
+                }
+            }
         }
     }
 </script>
@@ -53,7 +61,16 @@
 <style lang="sass">
     .t-login-item
         &__hr
-            border: 1px solid #C4C4C4;
+            border: 1px solid #C4C4C4
         &__text
-            margin-right: 20px;
+            margin-right: 20px
+        &__eye
+            position: relative
+        &__span
+            position: absolute
+            background: url('../../../images/eye-inline.png') no-repeat;
+            width: 31px;
+            height: 27px;
+            top: 50%;
+            right: 30px;
 </style>
