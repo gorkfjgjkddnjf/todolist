@@ -1,6 +1,6 @@
 <template>
     <div class="t-login-item">
-        <h2 class="pl-3 main-item-head mb-4">Вход</h2>
+        <h2 class="pl-3 main-item-head mb-4">Авторизация</h2>
         <form action="" method="POST" class="needs-validation">
                 <div class="form-group col-12">
                     <label for="email">Логин</label> 
