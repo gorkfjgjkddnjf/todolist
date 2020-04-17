@@ -22,7 +22,7 @@
         </popup>
 
         <div class="main-section" >
-            <div class="head-sub-task text-center py-2" @click="checkSubTask">
+            <div class="head-sub-task text-center py-2" >
                {{todos[index3].title}}
         </div>
         <div class=" mb-0 description">
@@ -34,10 +34,10 @@
         @isvisble="isvisble1"
         @addTodo="addTodo"/>  
     
-        <div class="sub" v-if="isVisible">
+        <div class="sub" v-show="isVisible">
             <div class="todo-item" v-for="(task, index) in subtask" :key="task.id">               
                 <div class="todo-item-left">
-                    <input type="checkbox" v-model="task.completed" class="ml-3">
+                    <input type="checkbox" v-model="task.completed" @change="checkSubTask" class="ml-3">
                     <p v-if="!task.editing" class="ml-4 mb-0 py-2 todo-item-label" :class="{completed : task.completed}">{{task.title}}</p>
                     <input v-else class="todo-item-edit ml-4 py-3" type="text" 
                     v-model="task.title" 
@@ -161,23 +161,23 @@ export default {
         },
         checkSubTask(){
             let color = ""
-            let checkbox = document.querySelector('input[type=checkbox]')
+            let countChecked = 0;
             if(this.subtask.length == 0){
                 color = "white"
             }
             else{
-                this.subtask.map(function(){
-                    if(!checkbox.checked){
+                this.subtask.forEach((task) =>{
+                    if(task.completed == false || task.completed == undefined){
                         color = "green"
-                        return
                     }
-                    else{
-                        color = "grey"
+                    else if(task.completed == true){
+                        countChecked++
                     }
                 })
+                if(countChecked == this.subtask.length){               
+                    color = "grey"
+                }
             }
-            console.log(color)
-            console.log(this.subtask.length) 
             this.$emit('changeColor', color)
         },
 
