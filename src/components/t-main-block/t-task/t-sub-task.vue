@@ -166,14 +166,13 @@ export default {
                 color = "white"
             }
             else{
-                this.subtask.map(function(task){
+                this.subtask.map(function(){
                     if(!checkbox.checked){
                         color = "green"
                         return
                     }
                     else{
                         color = "grey"
-                        console.log(task.completed)
                     }
                 })
             }
