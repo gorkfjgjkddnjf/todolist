@@ -1,12 +1,11 @@
 <template>
     <div class="t-task px-0">
 
-
-        <!-- <push>
-            Задача "{{todos[index1].title}}" успешно {{}}
-        </push> -->
-        
-
+        <transition name="animate">
+            <p class="push" v-show="isVisiblePush">
+                {{messages}}  
+            </p>     
+        </transition>   
 
         <popup v-if="isVisiblePopup" @closePopup="closePopup" @deleteItem="removeTodoItem" :index="index1" btnOk="Удалить">
             <template v-slot:head>
@@ -70,11 +69,10 @@
 </template>
 
 <script>
-let hideShowSubTask = 0;
+
 import tSelect from '../t-select'
 import subtask from '../t-task/t-sub-task'
 import popup from '../../popup/t-popup'
-//import push from '../../push/push'
 
 export default {
     name: "t-task",
@@ -82,11 +80,9 @@ export default {
         tSelect,
         subtask,
         popup,
-        //push
     },
     data(){
         return {
-            oldId: 0,
             index1: 0,
             subtask:[],
             isVisibleSubTask: false,
@@ -94,16 +90,14 @@ export default {
             newDescription: null,
             color: 'white',
             sortedTask: [],
+            beforeEdit: null,
+            isVisiblePush: false,
             options:[
-                {name: 'Все задачи', value:1},
-                {name: 'Исполненные', value: true},
-                {name: 'Не исполненные', value:false},
+                {name: 'Все задачи', value:2},
+                {name: 'Исполненные', value: 1},
+                {name: 'Не исполненные', value:0},
             ],
-            messages:[
-                {title: 'Добавлена', id: 1},
-                {title: 'Удалена', id: 2},
-                {title: 'Изменения успешно сохранены', id: 3}
-            ],
+            messages: null,
             format:{ 
                 year: 'numeric',
                 month: 'numeric', 
@@ -189,9 +183,6 @@ export default {
         }
     },
     computed: {
-        // color(){
-        //     return {'background':'red'}
-        // }
         filterTask(){
             if(this.sortedTask.length){
                 return this.sortedTask
@@ -202,6 +193,12 @@ export default {
         }
     },
     methods:{
+        hidePush(){
+            let vm = this
+            setTimeout(function () {
+                vm.isVisiblePush = false
+            },2000)
+        },
         sortByStatus(option){
             this.sortedTask = []
             let vm = this
@@ -216,14 +213,27 @@ export default {
             todo.editing = true
         },
         doneEdit(todo){
+
             todo.editing = false
+
+            this.isVisiblePush = true
+            this.messages = `Изменения успешно внесены`
+
+            this.hidePush()
         },
         cancelEdit(todo){
             todo.title = this.beforeEdit
+            todo.editing = false
         },
         removeTodoItem(index){
+            let tmp = this.todos[index].title
             this.todos.splice(index,1)
             this.isVisiblePopup = false
+
+            this.isVisiblePush = true
+            this.messages = `Задача "${tmp}" была успешно удалена`
+
+            this.hidePush()
         },
         confirmDeleteItem(index){
             this.isVisiblePopup = true
@@ -237,19 +247,6 @@ export default {
             this.isVisibleSubTask = true;
             this.index1 = index;
             this.subtask = this.todos[index].subtask;
-            if (hideShowSubTask == 0){
-                this.oldId = index;
-                hideShowSubTask++;
-            }
-            else if (this.oldId === index){
-                this.isVisibleSubTask = false;
-                hideShowSubTask--;
-            } else {
-                hideShowSubTask--;
-            }
-            // console.log(this.oldId );
-            // console.log(index);
-            // console.log(hideShowSubTask);   
         },
         sorted(){
             this.todos.sort(function(a,b){
@@ -266,25 +263,33 @@ export default {
             this.isCreateTaskVisible = true
         },
         newTaskAdd(){
-            let idNewTask = this.todos.length
+            let idNewTask = this.todos.length + 1
             let date = new Date()
             date = new Intl.DateTimeFormat('ru', this.format).format(date)
             let goodDate = date.replace(/[,]/g, '')
 
-            if(this.newTask.trim().length == 0 || this.newDescription.trim().length == 0){
+            if(this.newTask.trim().length == 0 || this.newDescription.trim().length == 0) {
+                this.isCreateTaskVisible = false
+                this.messages = `Задача не была добавлена за нарушения`
+                this.isVisiblePush = true
                 return
             }
             this.todos.push({
-                id: idNewTask + 1,
+                id: idNewTask,
                 title: this.newTask,
                 editing: false,
                 description: this.newDescription,
                 date: goodDate,
                 subtask: []
             })
+            this.messages = `Задача "${this.newTask}" была успешно добавлена`
+            this.isVisiblePush = true
+
             this.newTask = null
             this.newDescription = null
             this.isCreateTaskVisible = false
+
+            this.hidePush()
         },
         checkSubTask(){ // выдаю нужный цвет, (НЕ ЗАБУДЬ ЧТО ДЕЛАТЬ ДАЛЬШЕ) придумать как задавать его (СУКА УЖЕ ЗАБЫЛ) Наверное надо объеденить эти ф-ции и в зависимости от completed присваивать цвет
             this.todos.forEach(function(elem) {
@@ -305,7 +310,7 @@ export default {
                     })
                     if(countChecked == elem.subtask.length){               
                         color = "grey"
-                        elem.status = true
+                        elem.status = 1
                     }
                 }
                 elem.color = color
@@ -321,6 +326,26 @@ export default {
 
 
 <style lang="sass">
+
+.push
+    background: #ffffff
+    border-radius: 10px
+    position: fixed
+    right: 3%
+    top: 6%
+    z-index: 1000
+    padding: 15px
+
+.animate-enter-active 
+    transition: all .9s ease
+
+.animate-leave-active 
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0)
+
+.animate-enter, .animate-leave-to
+    transform: translateX(10px)
+    opacity: 0
+
 .main-section
     background: #F8F8F8
 
