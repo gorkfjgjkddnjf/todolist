@@ -234,7 +234,6 @@ export default {
             this.isCreateTaskVisible = false
         },
         showSubTask(index){
-<<<<<<< HEAD
             this.isVisibleSubTask = true;
             this.index1 = index;
             this.subtask = this.todos[index].subtask;
@@ -251,26 +250,6 @@ export default {
             // console.log(this.oldId );
             // console.log(index);
             // console.log(hideShowSubTask);   
-=======
-            
-            //console.log(hideShowSubTask);
-            this.isVisibleSubTask = true;
-            this.index1 = index;
-            this.subtask = this.todos[index].subtask;
-            if(hideShowSubTask == 0){
-                this.oldId = index;
-                // this.isVisibleSubTask = true;
-                hideShowSubTask++;
-            }
-            else if(this.index1 == this.oldId && this.hideShowSubTask != 0){
-                this.isVisibleSubTask = false;
-                hideShowSubTask = 0;
-            }
-            // else if(this.oldId != index){
-            //     hideShowSubTask=0;
-            // }
-            //console.log(hideShowSubTask);
->>>>>>> aef8cd403ba678840e0eb43cf767880fff37a00a
         },
         sorted(){
             this.todos.sort(function(a,b){
