@@ -70,7 +70,7 @@
 </template>
 
 <script>
-
+let hideShowSubTask = 0;
 import tSelect from '../t-select'
 import subtask from '../t-task/t-sub-task'
 import popup from '../../popup/t-popup'
@@ -86,6 +86,7 @@ export default {
     },
     data(){
         return {
+            oldId: 0,
             index1: 0,
             subtask:[],
             isVisibleSubTask: false,
@@ -211,9 +212,27 @@ export default {
             this.isCreateTaskVisible = false
         },
         showSubTask(index){
-            this.isVisibleSubTask = true
-            this.index1 = index
-            this.subtask = this.todos[index].subtask
+            console.log(this.todos[index].id);
+            console.log(index);
+            // this.oldId = index;
+            this.isVisibleSubTask = true;
+            // this.oldId = index;
+            // if(this.oldId == index){
+            if(hideShowSubTask == 0){
+                this.oldId = index;
+                // this.isVisibleSubTask = true;
+                this.index1 = index;
+                this.subtask = this.todos[index].subtask;
+                hideShowSubTask++;
+            }
+            else if(this.oldId === index){
+                this.isVisibleSubTask = false;
+                hideShowSubTask--;
+            }
+            else if(this.oldId != index){
+                hideShowSubTask--;
+            }
+
         },
         sorted(){
             this.todos.sort(function(a,b){
