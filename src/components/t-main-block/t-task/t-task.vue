@@ -215,27 +215,22 @@ export default {
             this.isCreateTaskVisible = false
         },
         showSubTask(index){
-            console.log(this.todos[index].id);
-            console.log(index);
-            // this.oldId = index;
             this.isVisibleSubTask = true;
-            // this.oldId = index;
-            // if(this.oldId == index){
-            if(hideShowSubTask == 0){
+            this.index1 = index;
+            this.subtask = this.todos[index].subtask;
+            if (hideShowSubTask == 0){
                 this.oldId = index;
-                // this.isVisibleSubTask = true;
-                this.index1 = index;
-                this.subtask = this.todos[index].subtask;
                 hideShowSubTask++;
             }
-            else if(this.oldId === index){
+            else if (this.oldId === index){
                 this.isVisibleSubTask = false;
                 hideShowSubTask--;
-            }
-            else if(this.oldId != index){
+            } else {
                 hideShowSubTask--;
             }
-
+            // console.log(this.oldId );
+            // console.log(index);
+            // console.log(hideShowSubTask);   
         },
         sorted(){
             this.todos.sort(function(a,b){
@@ -356,7 +351,6 @@ export default {
     width: 10px
     height: 41px
     background: white
-
 .date
     color: #c4c4c4
 
