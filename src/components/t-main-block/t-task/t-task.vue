@@ -248,6 +248,22 @@ export default {
             this.isVisibleSubTask = true;
             this.index1 = index;
             this.subtask = this.todos[index].subtask;
+<<<<<<< HEAD
+=======
+            if (hideShowSubTask == 0){
+                this.oldId = index;
+                hideShowSubTask++;
+            }
+            else if (this.oldId === index){
+                this.isVisibleSubTask = false;
+                hideShowSubTask--;
+            } else {
+                hideShowSubTask--;
+            }
+            // console.log(this.oldId );
+            // console.log(index);
+            // console.log(hideShowSubTask);   
+>>>>>>> bb4a4cb2dca90b61d7ad2ce391cd55ebbf8d23ed
         },
         sorted(){
             this.todos.sort(function(a,b){
@@ -397,7 +413,6 @@ export default {
     width: 10px
     height: 41px
     background: white
-
 .date
     color: #c4c4c4
 
