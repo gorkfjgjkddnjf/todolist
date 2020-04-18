@@ -65,7 +65,7 @@
         :index3="index1" 
         :subtask="subtask"
         @changeColor="changeColorTask"
-    
+        :format="format"
         />
     </div> 
 </template>
@@ -103,6 +103,14 @@ export default {
                 {title: 'Удалена', id: 2},
                 {title: 'Изменения успешно сохранены', id: 3}
             ],
+            format:{ 
+                year: 'numeric',
+                month: 'numeric', 
+                day: 'numeric',
+                hour: 'numeric', 
+                minute: 'numeric',
+                hour12: false
+            },
             isVisiblePopup: false,
             isCreateTaskVisible: false,
             selectedTASK: 'Все',
@@ -112,20 +120,20 @@ export default {
                     'title': 'Купить молоко',
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'editing': false,
-                    'date': '16.04.2020, 20:47:30',
+                    'date': '16.04.2020, 20:47',
                     'subtask':[
                         {
                             'id':1,
                             'title': 'Купить 1',
                             'editing': false,
-                            'date': '16.04.2020, 20:47:30',
+                            'date': '16.04.2020, 20:47',
                             'fast': false
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
-                            'date': '16.04.2020, 20:47:30',
+                            'date': '16.04.2020, 20:47',
                             'fast': false
                         }
                     ]
@@ -135,22 +143,22 @@ export default {
                     'title': 'Пойти на работу',
                     'editing': false,
                     'description': 'uighrg iuerw  uiergyhoe',
-                    'date': '16.04.2020, 20:47:30',
+                    'date': '16.04.2020, 20:47',
                     'subtask':[
                         {
                             'id':1,
                             'title': 'Купить 1',
                             'editing': false,
-                            'date': '16.04.2020, 20:47:30',
+                            'date': '16.04.2020, 20:47',
                             'fast': false
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
-                            'date': '16.04.2020, 20:47:30',
+                            'date': '16.03.2020, 20:47',
                             'fast': false
-                        }
+                        },
                     ]
                 },
                 {
@@ -158,7 +166,7 @@ export default {
                     'title': 'А Пойти на работу 1',
                     'editing': false,
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
-                    'date': '16.04.2020, 20:47:30',
+                    'date': '16.04.2020, 20:47',
 
                     'subtask':[
 
@@ -225,6 +233,8 @@ export default {
         },
         newTaskAdd(){
             let idNewTask = this.todos.length
+            let date = new Date()
+            console.log(date)
             if(this.newTask.trim().length == 0 || this.newDescription.trim().length == 0){
                 return
             }
@@ -233,7 +243,7 @@ export default {
                 title: this.newTask,
                 editing: false,
                 description: this.newDescription,
-                date: new Date().toLocaleString(),
+                date: new Intl.DateTimeFormat('ru', this.format).format(date),
                 subtask: []
             })
             this.newTask = null

@@ -22,7 +22,7 @@
         </popup>
 
         <div class="main-section" >
-            <div class="head-sub-task text-center py-2" >
+            <div class="head-sub-task text-center py-2" @click="sortByDate">
                {{todos[index3].title}}
         </div>
         <div class=" mb-0 description">
@@ -77,6 +77,7 @@ export default {
             index4: 0,
             isCreateTaskVisible: false,
             newSubTask: null,
+
         }
     },
     props:{
@@ -96,7 +97,12 @@ export default {
                 return[]
             }
         },
-        
+        format:{
+            type: Object,
+            default(){
+                return {}
+            }
+        }
 
     },
     directives:{
@@ -143,21 +149,23 @@ export default {
             let idNewTask = this.subtask.length
             let checkbox = document.querySelector('#fast')
             let urgency = false
+            let date = new Date()
             if(this.newSubTask.trim().length == 0){
                 return
             }
             if(checkbox.checked){
                 urgency = true
             }
-            this.subtask.push({
+            this.subtask.unshift({
                 id: idNewTask + 1,
                 title: this.newSubTask,
                 editing: false,
-                date: new Date().toLocaleString(),
+                date: new Intl.DateTimeFormat('ru', this.format).format(date),
                 fast: urgency
             })
             this.newSubTask = null
             this.isCreateTaskVisible = false
+            
         },
         checkSubTask(){
             let color = ""
@@ -181,11 +189,12 @@ export default {
             this.$emit('changeColor', color, this.index3)
         },
 
+
     },
     mounted(){
         this.checkSubTask()
-    }
-
+        
+    },
   
 }
 </script>
