@@ -133,6 +133,7 @@ export default {
         removeTodoItem(index){
             this.subtask.splice(index, 1)
             this.isVisiblePopup = false
+            this.checkSubTask()
         },
         confirmDeleteItem(index){
             this.isVisiblePopup = true
@@ -168,66 +169,13 @@ export default {
             })
             this.newSubTask = null
             this.isCreateTaskVisible = false
-            
+            this.checkSubTask()
         },
         checkSubTask(){
-                this.subtask.forEach((task) =>{
-
-                    this.$emit('changeColor', task.completed)
-                })
-
-            
-            
+            this.subtask.forEach((task) =>{
+                this.$emit('changeColor', task.completed)
+            })           
         },
-        // checkSubTask(){
-        //     let color = ""
-        //     let countChecked = 0;
-        //     if(this.subtask.length == 0){
-        //         color = "white"
-        //     }
-        //     else{
-        //         this.subtask.forEach((task) =>{
-        //             if(task.completed == false || task.completed == undefined){
-        //                 color = "green"
-        //             }
-        //             else if(task.completed == true){
-        //                 countChecked++
-        //             }
-        //         })
-        //         if(countChecked == this.subtask.length){               
-        //             color = "grey"
-        //         }
-        //     }
-        //     this.$emit('changeColor', color, this.index3)
-        // },
-        // checkSubTask(){
-        //     this.todos.forEach(function(elem) {
-        //         let color = ""
-        //         let countChecked = 0;
-                    
-        //         if(elem.subtask.length == 0){
-        //             color = "white"
-        //         }
-        //         else{
-        //             elem.subtask.forEach((task) =>{
-        //                 if(task.completed == false || task.completed == undefined){
-        //                     color = "green"
-        //                 }
-        //                 else if(task.completed == true){
-        //                     countChecked++
-        //                 }
-        //             })
-        //             if(countChecked == elem.subtask.length){               
-        //                 color = "grey"
-        //             }
-        //         }
-        //         console.log(color)
-        //         //console.log(this.index4)
-        //        // this.$emit('changeColor', color)
-        //     })
-        // },
-
-
     },
     mounted(){
         this.checkSubTask()        

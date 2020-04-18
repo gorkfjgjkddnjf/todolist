@@ -42,7 +42,7 @@
        
         <div class="todo-item" v-for="(todo, index) in todos" :key="todo.id" @click="showSubTask(index)">               
             <div class="todo-item-left">
-                <div class="check" :class="{grey : color == 'grey', green: color == 'green'}"></div>
+                <div class="check" :class="{grey : todo.color == 'grey', green: todo.color == 'green'}"></div>
                 <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.title}}</p>
                 <input v-else class="todo-item-edit ml-2 py-3" type="text"
                     v-model="todo.title" 
@@ -63,7 +63,7 @@
         v-show="isVisibleSubTask" 
         :index3="index1" 
         :subtask="subtask"
-        @changeColor="changeColorTask"
+        @changeColor="checkSubTask"
         :format="format"
         />
     </div> 
@@ -120,6 +120,7 @@ export default {
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'editing': false,
                     'date': '16.04.2020 20:47',
+                    'color': 'white',
                     'subtask':[
                         {
                             'id':1,
@@ -143,6 +144,7 @@ export default {
                     'editing': false,
                     'description': 'uighrg iuerw  uiergyhoe',
                     'date': '16.04.2020 20:47',
+                    'color': 'white',
                     'subtask':[
                         {
                             'id':1,
@@ -166,6 +168,7 @@ export default {
                     'editing': false,
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'date': '16.04.2020 20:47',
+                    'color': 'white',
                     'subtask':[
 
                     ]
@@ -250,9 +253,6 @@ export default {
             this.newDescription = null
             this.isCreateTaskVisible = false
         },
-        changeColorTask(completed){ //принимаю состояние подзадачи, для отслеживания и изменения цвета задачи
-            console.log(completed)
-        },
         checkSubTask(){ // выдаю нужный цвет, (НЕ ЗАБУДЬ ЧТО ДЕЛАТЬ ДАЛЬШЕ) придумать как задавать его (СУКА УЖЕ ЗАБЫЛ) Наверное надо объеденить эти ф-ции и в зависимости от completed присваивать цвет
             this.todos.forEach(function(elem) {
                 let color = ""
@@ -274,9 +274,7 @@ export default {
                         color = "grey"
                     }
                 }
-                console.log(color)
-                //console.log(this.index4)
-               // this.$emit('changeColor', color)
+                elem.color = color
             })
         }
     },
