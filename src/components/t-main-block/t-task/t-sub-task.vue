@@ -22,7 +22,7 @@
         </popup>
 
         <div class="main-section" >
-            <div class="head-sub-task text-center py-2" @click="sortByDate">
+            <div class="head-sub-task text-center py-2">
                {{todos[index3].title}}
         </div>
         <div class=" mb-0 description">
@@ -149,7 +149,10 @@ export default {
             let idNewTask = this.subtask.length
             let checkbox = document.querySelector('#fast')
             let urgency = false
-            let date = new Date()
+            let date = new Date() 
+            date = new Intl.DateTimeFormat('ru', this.format).format(date)
+            let goodDate = date.replace(/[,]/g, '')
+
             if(this.newSubTask.trim().length == 0){
                 return
             }
@@ -160,7 +163,7 @@ export default {
                 id: idNewTask + 1,
                 title: this.newSubTask,
                 editing: false,
-                date: new Intl.DateTimeFormat('ru', this.format).format(date),
+                date: goodDate,
                 fast: urgency
             })
             this.newSubTask = null
@@ -168,32 +171,66 @@ export default {
             
         },
         checkSubTask(){
-            let color = ""
-            let countChecked = 0;
-            if(this.subtask.length == 0){
-                color = "white"
-            }
-            else{
                 this.subtask.forEach((task) =>{
-                    if(task.completed == false || task.completed == undefined){
-                        color = "green"
-                    }
-                    else if(task.completed == true){
-                        countChecked++
-                    }
+
+                    this.$emit('changeColor', task.completed)
                 })
-                if(countChecked == this.subtask.length){               
-                    color = "grey"
-                }
-            }
-            this.$emit('changeColor', color, this.index3)
+
+            
+            
         },
+        // checkSubTask(){
+        //     let color = ""
+        //     let countChecked = 0;
+        //     if(this.subtask.length == 0){
+        //         color = "white"
+        //     }
+        //     else{
+        //         this.subtask.forEach((task) =>{
+        //             if(task.completed == false || task.completed == undefined){
+        //                 color = "green"
+        //             }
+        //             else if(task.completed == true){
+        //                 countChecked++
+        //             }
+        //         })
+        //         if(countChecked == this.subtask.length){               
+        //             color = "grey"
+        //         }
+        //     }
+        //     this.$emit('changeColor', color, this.index3)
+        // },
+        // checkSubTask(){
+        //     this.todos.forEach(function(elem) {
+        //         let color = ""
+        //         let countChecked = 0;
+                    
+        //         if(elem.subtask.length == 0){
+        //             color = "white"
+        //         }
+        //         else{
+        //             elem.subtask.forEach((task) =>{
+        //                 if(task.completed == false || task.completed == undefined){
+        //                     color = "green"
+        //                 }
+        //                 else if(task.completed == true){
+        //                     countChecked++
+        //                 }
+        //             })
+        //             if(countChecked == elem.subtask.length){               
+        //                 color = "grey"
+        //             }
+        //         }
+        //         console.log(color)
+        //         //console.log(this.index4)
+        //        // this.$emit('changeColor', color)
+        //     })
+        // },
 
 
     },
     mounted(){
-        this.checkSubTask()
-        
+        this.checkSubTask()        
     },
   
 }

@@ -5,7 +5,6 @@
             <i class="material-icons icon" v-if="!isOptionVisible" @click="noVisible">keyboard_arrow_down</i>
             <i class="material-icons icon" v-else @click="noVisible">keyboard_arrow_up</i>
             <i class="material-icons shedule" id="add" @click="addTodo">add</i>
-            <i class="material-icons icon" id="sort" @click="sorted">sort</i>
         </div>
         <div class="options" v-if="isOptionVisible">
             <div class="pl-4 option"                 
@@ -72,13 +71,10 @@ export default {
 // .options
 //     height: 12rem
 
-#sort
-    position: absolute
-    right: 1.3rem
 
 #add
     position: absolute
-    right: 2.8rem   
+    right: 1.3rem   
     color: #000000  
 
 </style>

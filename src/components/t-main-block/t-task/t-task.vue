@@ -36,7 +36,6 @@
             :options="options"
             @select="optionSelected"
             :selected="selectedTASK"
-            @sorted="sorted"
             @addTodo="addTodo"
             />
         </div>
@@ -120,20 +119,20 @@ export default {
                     'title': 'Купить молоко',
                     'description': 'uighrg iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'editing': false,
-                    'date': '16.04.2020, 20:47',
+                    'date': '16.04.2020 20:47',
                     'subtask':[
                         {
                             'id':1,
                             'title': 'Купить 1',
                             'editing': false,
-                            'date': '16.04.2020, 20:47',
+                            'date': '16.04.2020 20:47',
                             'fast': false
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
-                            'date': '16.04.2020, 20:47',
+                            'date': '16.04.2020 20:47',
                             'fast': false
                         }
                     ]
@@ -143,20 +142,20 @@ export default {
                     'title': 'Пойти на работу',
                     'editing': false,
                     'description': 'uighrg iuerw  uiergyhoe',
-                    'date': '16.04.2020, 20:47',
+                    'date': '16.04.2020 20:47',
                     'subtask':[
                         {
                             'id':1,
                             'title': 'Купить 1',
                             'editing': false,
-                            'date': '16.04.2020, 20:47',
+                            'date': '16.04.2020 20:47',
                             'fast': false
                         },
                         {
                             'id':2,
                             'title': 'Купить 2',
                             'editing': false,
-                            'date': '16.03.2020, 20:47',
+                            'date': '16.03.2020 20:47',
                             'fast': false
                         },
                     ]
@@ -166,8 +165,7 @@ export default {
                     'title': 'А Пойти на работу 1',
                     'editing': false,
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
-                    'date': '16.04.2020, 20:47',
-
+                    'date': '16.04.2020 20:47',
                     'subtask':[
 
                     ]
@@ -219,10 +217,10 @@ export default {
         },
         sorted(){
             this.todos.sort(function(a,b){
-                if(a.title<b.title){
+                if(a.title>b.title){
                     return 1
                 }
-                else if(a.title>b.title){
+                if(a.title<b.title){
                     return -1
                 }
                 return 0
@@ -234,7 +232,9 @@ export default {
         newTaskAdd(){
             let idNewTask = this.todos.length
             let date = new Date()
-            console.log(date)
+            date = new Intl.DateTimeFormat('ru', this.format).format(date)
+            let goodDate = date.replace(/[,]/g, '')
+
             if(this.newTask.trim().length == 0 || this.newDescription.trim().length == 0){
                 return
             }
@@ -243,29 +243,46 @@ export default {
                 title: this.newTask,
                 editing: false,
                 description: this.newDescription,
-                date: new Intl.DateTimeFormat('ru', this.format).format(date),
+                date: goodDate,
                 subtask: []
             })
             this.newTask = null
             this.newDescription = null
             this.isCreateTaskVisible = false
         },
-        changeColorTask(color, index3){
-            console.log(color, index3)
-            this.color = color
-            console.log(this.color)
+        changeColorTask(completed){ //принимаю состояние подзадачи, для отслеживания и изменения цвета задачи
+            console.log(completed)
+        },
+        checkSubTask(){ // выдаю нужный цвет, (НЕ ЗАБУДЬ ЧТО ДЕЛАТЬ ДАЛЬШЕ) придумать как задавать его (СУКА УЖЕ ЗАБЫЛ) Наверное надо объеденить эти ф-ции и в зависимости от completed присваивать цвет
+            this.todos.forEach(function(elem) {
+                let color = ""
+                let countChecked = 0;
+                    
+                if(elem.subtask.length == 0){
+                    color = "white"
+                }
+                else{
+                    elem.subtask.forEach((task) =>{
+                        if(task.completed == false || task.completed == undefined){
+                            color = "green"
+                        }
+                        else if(task.completed == true){
+                            countChecked++
+                        }
+                    })
+                    if(countChecked == elem.subtask.length){               
+                        color = "grey"
+                    }
+                }
+                console.log(color)
+                //console.log(this.index4)
+               // this.$emit('changeColor', color)
+            })
         }
     },
     mounted(){
-        this.todos.sort(function(a,b){
-            if(a.title>b.title){
-                return 1
-            }
-            if(a.title<b.title){
-                return -1
-            }
-            return 0
-        })  
+        this.sorted() 
+        this.checkSubTask()
     }
 }
 </script>
