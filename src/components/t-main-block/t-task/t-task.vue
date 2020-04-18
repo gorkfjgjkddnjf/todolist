@@ -215,7 +215,6 @@ export default {
         doneEdit(todo){
 
             todo.editing = false
-            this.messages = ''
 
             this.isVisiblePush = true
             this.messages = `Изменения успешно внесены`
@@ -283,7 +282,7 @@ export default {
                 date: goodDate,
                 subtask: []
             })
-            this.messages = `Задача ${this.newTask} была успешно добавлена`
+            this.messages = `Задача "${this.newTask}" была успешно добавлена`
             this.isVisiblePush = true
 
             this.newTask = null

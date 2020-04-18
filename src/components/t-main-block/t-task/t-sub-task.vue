@@ -1,6 +1,12 @@
 <template>
     <div class="t-sub-task">
 
+        <transition name="animate">
+            <p class="push" v-show="isVisiblePush">
+                {{messages}}  
+            </p>     
+        </transition>  
+
         <popup v-if="isVisiblePopup" @closePopup="closePopup" @deleteItem="removeTodoItem" :index="index4" btnOk="Удалить">
             <template v-slot:head>
                 <h2 class="tt">Вы действительно хотите удалить "{{subtask[index4].title}}" из списка "{{todos[index3].title}}"</h2>
@@ -77,7 +83,8 @@ export default {
             index4: 0,
             isCreateTaskVisible: false,
             newSubTask: null,
-
+            messages: null,
+            isVisiblePush: false
         }
     },
     props:{
@@ -102,7 +109,7 @@ export default {
             default(){
                 return {}
             }
-        }
+        },
 
     },
     directives:{
@@ -113,6 +120,12 @@ export default {
         }
     },
     methods:{
+        hidePush(){
+            let vm = this
+            setTimeout(function () {
+                vm.isVisiblePush = false
+            },2000)
+        },
         textarea(){
             let textarea = document.querySelector('textarea');
             textarea.addEventListener('keyup', function(){
@@ -129,11 +142,24 @@ export default {
         },
         doneEdit(todo){
             todo.editing = false
+
+            this.isVisiblePush = true
+            this.messages = `Изменения успешно внесены`
+
+            this.hidePush()
         },
         removeTodoItem(index){
+            let tmp = this.subtask[index].title
+            this.isVisiblePush = true
+
+            this.isVisiblePush = true
+            this.messages = `Подзадача "${tmp}" была успешно удалена`
+
             this.subtask.splice(index, 1)
             this.isVisiblePopup = false
+
             this.checkSubTask()
+            this.hidePush()
         },
         confirmDeleteItem(index){
             this.isVisiblePopup = true
@@ -147,7 +173,7 @@ export default {
             this.isCreateTaskVisible = true
         },
         newTaskAdd(){
-            let idNewTask = this.subtask.length
+            let idNewTask = this.subtask.length + 1
             let checkbox = document.querySelector('#fast')
             let urgency = false
             let date = new Date() 
@@ -155,21 +181,29 @@ export default {
             let goodDate = date.replace(/[,]/g, '')
 
             if(this.newSubTask.trim().length == 0){
+                this.isCreateTaskVisible = false
+                this.messages = `Подзадача не была добавлена за нарушения`
+                this.isVisiblePush = true
                 return
             }
             if(checkbox.checked){
                 urgency = true
             }
             this.subtask.unshift({
-                id: idNewTask + 1,
+                id: idNewTask,
                 title: this.newSubTask,
                 editing: false,
                 date: goodDate,
                 fast: urgency
             })
+            this.messages = `Подзадача "${this.newSubTask}" была успешно добавлена`
+            this.isVisiblePush = true
+
             this.newSubTask = null
             this.isCreateTaskVisible = false
+
             this.checkSubTask()
+            this.hidePush()
         },
         checkSubTask(){
             this.subtask.forEach((task) =>{
