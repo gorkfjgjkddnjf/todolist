@@ -34,13 +34,13 @@
             <div class="select">
             <t-select
             :options="options"
-            @select="optionSelected"
+            @select="sortByStatus"
             :selected="selectedTASK"
             @addTodo="addTodo"
             />
         </div>
        
-        <div class="todo-item" v-for="(todo, index) in todos" :key="todo.id" @click="showSubTask(index)">               
+        <div class="todo-item" v-for="(todo, index) in filterTask" :key="todo.id" @click="showSubTask(index)">               
             <div class="todo-item-left">
                 <div class="check" :class="{grey : todo.color == 'grey', green: todo.color == 'green'}"></div>
                 <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.title}}</p>
@@ -93,10 +93,11 @@ export default {
             newTask: null,
             newDescription: null,
             color: 'white',
+            sortedTask: [],
             options:[
                 {name: 'Все задачи', value:1},
-                {name: 'Исполненные', value:2},
-                {name: 'Не исполненные', value:3},
+                {name: 'Исполненные', value: true},
+                {name: 'Не исполненные', value:false},
             ],
             messages:[
                 {title: 'Добавлена', id: 1},
@@ -122,6 +123,7 @@ export default {
                     'editing': false,
                     'date': '16.04.2020 20:47',
                     'color': 'white',
+                    'status': false,
                     'subtask':[
                         {
                             'id':1,
@@ -146,6 +148,7 @@ export default {
                     'description': 'uighrg iuerw  uiergyhoe',
                     'date': '16.04.2020 20:47',
                     'color': 'white',
+                    'status': false,
                     'subtask':[
                         {
                             'id':1,
@@ -170,6 +173,7 @@ export default {
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'date': '16.04.2020 20:47',
                     'color': 'white',
+                    'status': false,
                     'subtask':[
 
                     ]
@@ -188,9 +192,24 @@ export default {
         // color(){
         //     return {'background':'red'}
         // }
+        filterTask(){
+            if(this.sortedTask.length){
+                return this.sortedTask
+            }
+            else{
+                return this.todos
+            }
+        }
     },
     methods:{
-        optionSelected(option){
+        sortByStatus(option){
+            this.sortedTask = []
+            let vm = this
+            this.todos.map(function(item){
+                if(item.status == option.value){
+                    vm.sortedTask.push(item)
+                }
+            })
             this.selectedTASK = option.name
         },
         editTodoItem(todo){
@@ -215,27 +234,24 @@ export default {
             this.isCreateTaskVisible = false
         },
         showSubTask(index){
-            console.log(this.todos[index].id);
-            console.log(index);
-            // this.oldId = index;
+            
+            //console.log(hideShowSubTask);
             this.isVisibleSubTask = true;
-            // this.oldId = index;
-            // if(this.oldId == index){
+            this.index1 = index;
+            this.subtask = this.todos[index].subtask;
             if(hideShowSubTask == 0){
                 this.oldId = index;
                 // this.isVisibleSubTask = true;
-                this.index1 = index;
-                this.subtask = this.todos[index].subtask;
                 hideShowSubTask++;
             }
-            else if(this.oldId === index){
+            else if(this.index1 == this.oldId && this.hideShowSubTask != 0){
                 this.isVisibleSubTask = false;
-                hideShowSubTask--;
+                hideShowSubTask = 0;
             }
-            else if(this.oldId != index){
-                hideShowSubTask--;
-            }
-
+            // else if(this.oldId != index){
+            //     hideShowSubTask=0;
+            // }
+            //console.log(hideShowSubTask);
         },
         sorted(){
             this.todos.sort(function(a,b){
@@ -291,6 +307,7 @@ export default {
                     })
                     if(countChecked == elem.subtask.length){               
                         color = "grey"
+                        elem.status = true
                     }
                 }
                 elem.color = color
