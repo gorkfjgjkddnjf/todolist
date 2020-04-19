@@ -117,7 +117,7 @@ export default {
                     'editing': false,
                     'date': '16.04.2020 20:47',
                     'color': 'white',
-                    'status': false,
+                    'status': 0,
                     'subtask':[
                         {
                             'id':1,
@@ -142,7 +142,7 @@ export default {
                     'description': 'uighrg iuerw  uiergyhoe',
                     'date': '16.04.2020 20:47',
                     'color': 'white',
-                    'status': false,
+                    'status': 0,
                     'subtask':[
                         {
                             'id':1,
@@ -167,7 +167,7 @@ export default {
                     'description': 'uighrg iuerw iuerw hrngurigh erugihrnfuo srhg uiergyhoe',
                     'date': '16.04.2020 20:47',
                     'color': 'white',
-                    'status': false,
+                    'status': 0,
                     'subtask':[
 
                     ]
@@ -190,7 +190,8 @@ export default {
             else{
                 return this.todos
             }
-        }
+        },
+
     },
     methods:{
         hidePush(){
@@ -200,6 +201,7 @@ export default {
             },2000)
         },
         sortByStatus(option){
+            
             this.sortedTask = []
             let vm = this
             this.todos.map(function(item){
@@ -298,11 +300,13 @@ export default {
                     
                 if(elem.subtask.length == 0){
                     color = "white"
+                    elem.status = 0
                 }
                 else{
                     elem.subtask.forEach((task) =>{
                         if(task.completed == false || task.completed == undefined){
                             color = "green"
+                            elem.status = 0
                         }
                         else if(task.completed == true){
                             countChecked++

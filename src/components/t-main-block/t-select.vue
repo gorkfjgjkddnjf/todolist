@@ -44,7 +44,8 @@ export default {
             isOptionVisible: false, 
         }
     },
-    computed: {},
+    computed: {
+    },
     methods:{
         selectOption(option){
             this.$emit('select', option)
