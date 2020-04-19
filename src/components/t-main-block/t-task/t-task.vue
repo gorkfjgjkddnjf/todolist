@@ -300,7 +300,7 @@ export default {
                     
                 if(elem.subtask.length == 0){
                     color = "white"
-                    //elem.status = 2
+                    elem.status = 0
                 }
                 else{
                     elem.subtask.forEach((task) =>{
