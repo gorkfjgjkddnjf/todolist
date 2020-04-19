@@ -13,12 +13,14 @@
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
                 <input v-bind:type="password" name="pass" class="form-control form-control-lg t-sign-up-item__eye" id="pass" required>
-                <span class="t-sign-up-item__span" v-on:click="type"></span>
+                <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
+                <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
             </div>
             <div class="form-group col-12">
                 <label for="confirm-pass">Подтвердите пароль</label> 
                 <input v-bind:type="password" name="confirm-pass" class="form-control form-control-lg t-sign-up-item__eye" id="confirm-pass" required>
-                <span class="t-sign-up-item__span" v-on:click="type"></span>
+                <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
+                <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
             </div>
             <div class="row justify-content-center mx-0 link">
                 <p class="mb-0">Нажимая "Регистрация" Вы соглашаетесь с</p>
@@ -46,16 +48,21 @@ export default {
     name: "t-sign-up-item",
     components: {},
     data(){
-        return {password: 'password'}
+        return {
+            password: 'password',
+            visibility: false
+        }
     },
     computed: {},
     methods: {
         type(){
             if (this.password === "password"){
                 this.password = "text";
+                this.visibility = true
             }
             else{
                 this.password = "password";
+                this.visibility = false
             }
         }
     }
@@ -64,16 +71,13 @@ export default {
 
 
 <style lang="sass">
-    .t-sign-up-item
-        &__hr
-            border: 1px solid #C4C4C4;
-        &__eye
-            position: relative;
-        &__span
-            position: absolute
-            background: url('../../../images/eye-inline.png') no-repeat;
-            width: 31px;
-            height: 27px;
-            top: 50%;
-            right: 30px;
+.t-sign-up-item
+    &__hr
+        border: 1px solid #C4C4C4
+
+.visibility
+    position: absolute
+    top: 50%
+    left: 90%
+
 </style>
