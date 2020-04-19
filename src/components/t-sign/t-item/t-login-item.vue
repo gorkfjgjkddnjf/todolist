@@ -4,11 +4,7 @@
         <form action="" method="POST" class="needs-validation" @submit.prevent="login">
             <div class="form-group col-12">
                 <label for="email">Email</label> 
-<<<<<<< HEAD
                 <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="logEmail" value = "Деда">
-=======
-                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="username">
->>>>>>> 415f4417b9d5ac45b202ea67909dce697fb8b761
             </div>
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
@@ -39,7 +35,6 @@
 
 <script>
     import router from "../../../router/router";
-    import array from "./array.json";
      export default {
         name: "t-login-item",
         components: {},
@@ -47,13 +42,8 @@
             return {
                 typeInput: 'password',
                 visibility: false,
-<<<<<<< HEAD
                 logEmail: "",
                 password: ""
-=======
-                username: '',
-                password: '',
->>>>>>> 415f4417b9d5ac45b202ea67909dce697fb8b761
             }
         },
         computed: {
@@ -70,26 +60,12 @@
                 else{
                     this.typeInput = "password";
                     this.visibility = false
-<<<<<<< HEAD
                 }
             },
             login(){
-                JSON.parse(JSON.stringify(array));
-                for(let i = 0; i < array.user.length; i++){
-                    if(array.user[i].username == this.logEmail && array.user[i].password == this.password){
-                        router.push({ path: '/' });
-                    }
-                }
-                
-=======
-                }
-            },
-            login(){
-                this.$store.dispatch('retieveToken',{
-                    username: this.username,
-                    password: this.password
-                })
->>>>>>> 415f4417b9d5ac45b202ea67909dce697fb8b761
+                if(localStorage.emailForm == this.logEmail && localStorage.passwordForm == this.password){
+                    router.push({ path: '/' });
+                } 
             }
         }
     }
