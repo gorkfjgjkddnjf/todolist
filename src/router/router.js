@@ -39,12 +39,12 @@ let router = new Router({
         }, 
     ]
 });
-if(localStorage.getItem('test') === "1"){
-    router.push({ path: '/login' })
-}
-else{
-    localStorage.setItem('test', 1);
-    router.push({ path: '/sign-up' })
-}
+// if(localStorage.getItem('test') === "1"){
+//     router.push({ path: '/login' })
+// }
+// else{
+//     localStorage.setItem('test', 1);
+//     router.push({ path: '/sign-up' })
+// }
 console.log(router);
 export default router

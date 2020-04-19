@@ -119,6 +119,11 @@ export default {
             }
         }
     },
+    computed:{
+        ff(){
+            return this.checkSubTask
+        }
+    },
     methods:{
         hidePush(){
             let vm = this
