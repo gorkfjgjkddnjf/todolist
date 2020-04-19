@@ -4,7 +4,11 @@
         <form action="" method="POST" class="needs-validation" @submit.prevent="login">
             <div class="form-group col-12">
                 <label for="email">Email</label> 
+<<<<<<< HEAD
                 <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="logEmail" value = "Деда">
+=======
+                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="username">
+>>>>>>> 415f4417b9d5ac45b202ea67909dce697fb8b761
             </div>
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
@@ -43,8 +47,13 @@
             return {
                 typeInput: 'password',
                 visibility: false,
+<<<<<<< HEAD
                 logEmail: "",
                 password: ""
+=======
+                username: '',
+                password: '',
+>>>>>>> 415f4417b9d5ac45b202ea67909dce697fb8b761
             }
         },
         computed: {
@@ -61,6 +70,7 @@
                 else{
                     this.typeInput = "password";
                     this.visibility = false
+<<<<<<< HEAD
                 }
             },
             login(){
@@ -71,6 +81,15 @@
                     }
                 }
                 
+=======
+                }
+            },
+            login(){
+                this.$store.dispatch('retieveToken',{
+                    username: this.username,
+                    password: this.password
+                })
+>>>>>>> 415f4417b9d5ac45b202ea67909dce697fb8b761
             }
         }
     }
