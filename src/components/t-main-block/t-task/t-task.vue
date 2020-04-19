@@ -188,7 +188,6 @@ export default {
                 return this.sortedTask
             }
             else{
-                this.checkSubTask()
                 return this.todos
             }
         },
