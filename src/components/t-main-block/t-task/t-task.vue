@@ -43,7 +43,7 @@
             <div class="todo-item-left">
                 <div class="check" :class="{grey : todo.color == 'grey', green: todo.color == 'green'}"></div>
                 <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.title}}</p>
-                <input v-else class="todo-item-edit ml-2 py-3" type="text"
+                <input v-else class="todo-item-edit ml-2 py-2" type="text"
                     v-model="todo.title" 
                     @blur="doneEdit(todo)"
                     @keyup.enter="doneEdit(todo)"
@@ -73,7 +73,6 @@
 import tSelect from '../t-select'
 import subtask from '../t-task/t-sub-task'
 import popup from '../../popup/t-popup'
-
 export default {
     name: "t-task",
     components: {
@@ -384,6 +383,7 @@ export default {
     cursor: pointer
 
 .todo-item-edit
+    max-height: 41px 
     width: 100%
     border: none
     //border-bottom: 1px solid rgba(196, 196, 196, 0.4)
@@ -396,7 +396,7 @@ export default {
     font-size: 25px
 
 .check
-    width: 10px
+    min-width: 10px
     height: 41px
     background: white
 .date

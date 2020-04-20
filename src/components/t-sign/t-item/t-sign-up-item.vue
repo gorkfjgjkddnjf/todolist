@@ -4,23 +4,23 @@
         <form action="" method="POST" class="needs-validation">
             <div class="form-group col-12">
                 <label for="username">Ваше имя</label> 
-                <input type="text" name="username" class="form-control form-control-lg" id="username" required>
+                <input type="text" name="username" class="form-control form-control-lg" id="username" required v-model="nameForm">
             </div>
             <div class="form-group col-12">
                 <label for="email">Email</label> 
-                <input type="email" name="login" class="form-control form-control-lg" id="email" required>
+                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="emailForm">
             </div>
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
-                <input v-bind:type="password" name="pass" class="form-control form-control-lg t-sign-up-item__eye" id="pass" required>
-                <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
-                <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
+                <input v-bind:type="type" name="pass" class="form-control form-control-lg t-sign-up-item__eye" id="pass" required v-model="passwordForm">
+                <i class="material-icons visibility" v-if="!visibility" v-on:click="typeInput">visibility_off</i>
+                <i class="material-icons visibility" v-else v-on:click="typeInput">visibility</i>
             </div>
             <div class="form-group col-12">
                 <label for="confirm-pass">Подтвердите пароль</label> 
-                <input v-bind:type="password" name="confirm-pass" class="form-control form-control-lg t-sign-up-item__eye" id="confirm-pass" required>
-                <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
-                <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
+                <input v-bind:type="type" name="confirm-pass" class="form-control form-control-lg t-sign-up-item__eye" id="confirm-pass" required v-model ="passwordConfrimForm">
+                <i class="material-icons visibility" v-if="!visibility" v-on:click="typeInput">visibility_off</i>
+                <i class="material-icons visibility" v-else v-on:click="typeInput">visibility</i>
             </div>
             <div class="row justify-content-center mx-0 link">
                 <p class="mb-0">Нажимая "Регистрация" Вы соглашаетесь с</p>
@@ -29,7 +29,7 @@
                 </router-link>
             </div>
             <div class="form-group col-12">
-                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход">
+                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход" v-on:click="postForm">
             </div>
             <hr class="t-sign-up-item__hr">
             <div class="row justify-content-center mx-0 link">
@@ -43,27 +43,38 @@
 </template>
 
 <script>
-// let k = 0;
+import router from "../../../router/router";
 export default {
     name: "t-sign-up-item",
     components: {},
     data(){
         return {
-            password: 'password',
+            nameForm: "",
+            emailForm: "",
+            passwordForm: "",
+            passwordConfrimForm: "",
+            type: 'password',
             visibility: false
         }
     },
     computed: {},
     methods: {
-        type(){
-            if (this.password === "password"){
-                this.password = "text";
+        typeInput(){
+            if (this.type === "password"){
+                this.type = "text";
                 this.visibility = true
             }
             else{
-                this.password = "password";
+                this.type = "password";
                 this.visibility = false
             }
+        },
+        postForm(){
+            localStorage.nameForm = this.nameForm;
+            localStorage.emailForm = this.emailForm;
+            localStorage.passwordForm = this.passwordForm;
+            localStorage.passwordConfrimForm = this.passwordConfrimForm;
+            router.push({ path: '/login' })
         }
     }
 }

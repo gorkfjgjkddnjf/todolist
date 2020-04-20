@@ -4,7 +4,7 @@
         <form action="" method="POST" class="needs-validation" @submit.prevent="login">
             <div class="form-group col-12">
                 <label for="email">Email</label> 
-                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="username">
+                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="logEmail" value = "Деда">
             </div>
             <div class="form-group col-12">
                 <label for="pass">Пароль</label> 
@@ -14,7 +14,7 @@
                 <small v-show="valid" class="invalid-login">Неверный логин или пароль</small>
             </div>
             <div class="form-group col-12">
-                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход">
+                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход" v-on:click="login">
             </div>
             <div class="col-12">
                 <router-link :to="{name: 'forgot-pass'}">
@@ -34,15 +34,16 @@
 </template>
 
 <script>
-    export default {
+    import router from "../../../router/router";
+     export default {
         name: "t-login-item",
         components: {},
         data() {
             return {
                 typeInput: 'password',
                 visibility: false,
-                username: '',
-                password: '',
+                logEmail: "",
+                password: ""
             }
         },
         computed: {
@@ -62,10 +63,9 @@
                 }
             },
             login(){
-                this.$store.dispatch('retieveToken',{
-                    username: this.username,
-                    password: this.password
-                })
+                if(localStorage.emailForm == this.logEmail && localStorage.passwordForm == this.password){
+                    router.push({ path: '/' });
+                } 
             }
         }
     }
