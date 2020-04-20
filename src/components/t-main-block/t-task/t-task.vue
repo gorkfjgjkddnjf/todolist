@@ -201,7 +201,6 @@ export default {
             },2000)
         },
         sortByStatus(option){
-            
             this.sortedTask = []
             let vm = this
             this.todos.map(function(item){
