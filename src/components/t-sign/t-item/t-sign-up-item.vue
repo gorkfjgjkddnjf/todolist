@@ -99,6 +99,7 @@ export default {
                 password_confirmation: this.password_confirmation
             }
             this.REGISTER_USER(user)
+            this.$router.push('/login')
         }
     },
 }
