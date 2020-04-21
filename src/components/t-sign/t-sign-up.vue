@@ -1,8 +1,7 @@
 <template>
     <div class="t-sign-up container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-6 shadow sign">
-                <!-- <h2 class="head-todo-list mt-5 mb-4">ToDoList</h2> -->
+            <div class="col-12 col-md-8 col-lg-6 col-xl-6 shadow sign my-5">
                 <tSignUpItem/>
             </div>
         </div>

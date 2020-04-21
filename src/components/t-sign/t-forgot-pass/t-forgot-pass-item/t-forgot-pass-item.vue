@@ -1,6 +1,6 @@
 <template>
     <div class="t-forgot-pass-item">
-        <h2 class="pl-3 main-item-head mb-4">Забыли пароль?</h2>
+        <h2 class="pl-3 main-item-head my-4">Забыли пароль?</h2>
         <p class="t-forgot-pass-item__text">Введите адрес электронной почты</p>
         <form action="" method="POST" class="needs-validation" v-if="showForm">
             <div class="form-group col-12">

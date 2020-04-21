@@ -1,6 +1,6 @@
 <template>
     <div class="t-password-recovery-item text-align-center">
-        <h2 class="pl-3 main-item-head mb-4 t-password-recovery-item__title">Забыли пароль?</h2>
+        <h2 class="pl-3 main-item-head t-password-recovery-item__title my-4">Забыли пароль?</h2>
         <p class="t-password-recovery-item__text">Сообщение восстановления пароля отправлено на указанную почту</p>
         <div class="row justify-content-center mx-0 link">
             <div class="col-12 text-center">

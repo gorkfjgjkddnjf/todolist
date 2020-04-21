@@ -1,24 +1,24 @@
 <template>
-    <div class="t-login-item">
+    <div class="t-login-item my-5">
         <h2 class="pl-3 main-item-head mb-4">Авторизация</h2>
-        <form action="" method="POST" class="needs-validation" @submit.prevent="login">
-            <div class="form-group col-12">
+        <form @submit.prevent="login_user">
+            <div class="form-group mb-4 col-12">
                 <label for="email">Email</label> 
                 <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="logEmail" value = "Деда">
             </div>
-            <div class="form-group col-12">
+            <div class="form-group mb-4 col-12">
                 <label for="pass">Пароль</label> 
                 <input v-bind:type="typeInput" name="pass" class="form-control form-control-lg t-login-item__eye" id="pass" required v-model="password">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
                 <small v-show="valid" class="invalid-login">Неверный логин или пароль</small>
             </div>
-            <div class="form-group col-12">
-                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход" v-on:click="login">
+            <div class="form-group my-4 col-12">
+                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход">
             </div>
             <div class="col-12">
                 <router-link :to="{name: 'forgot-pass'}">
-                    <p class="forgot-pass-link">Забыли пароль?</p>
+                    <p class="forgot-pass-link mb-4">Забыли пароль?</p>
                 </router-link>
             <hr class="t-login-item__hr">
             </div>
@@ -34,41 +34,52 @@
 </template>
 
 <script>
-    import router from "../../../router/router";
-     export default {
-        name: "t-login-item",
-        components: {},
-        data() {
-            return {
-                typeInput: 'password',
-                visibility: false,
-                logEmail: "",
-                password: ""
-            }
-        },
-        computed: {
-            valid(){
-                return false
-            }
-        },
-        methods:{
-            type(){
-                if (this.typeInput === "password"){
-                    this.typeInput = "text";
-                    this.visibility = true
-                }
-                else{
-                    this.typeInput = "password";
-                    this.visibility = false
-                }
-            },
-            login(){
-                if(localStorage.emailForm == this.logEmail && localStorage.passwordForm == this.password){
-                    router.push({ path: '/' });
-                } 
-            }
+
+import {mapActions, mapGetters} from 'vuex'
+
+export default {
+    name: "t-login-item",
+    components: {},
+    data() {
+        return {
+            typeInput: 'password',
+            visibility: false,
+            logEmail: "",
+            password: ""
         }
-    }
+    },
+    computed: {
+        valid(){
+            return false
+        },
+        ...mapGetters([
+            'ERRORS'
+        ])
+    },
+    methods:{
+        type(){
+            if (this.typeInput === "password"){
+                this.typeInput = "text";
+                this.visibility = true
+            }
+            else{
+                this.typeInput = "password";
+                this.visibility = false
+            }
+        },
+        ...mapActions([
+            'LOGIN_USER'
+        ]),
+        login_user(){
+            let user = {
+                email: this.logEmail,
+                password: this.password
+            }
+            this.LOGIN_USER(user)
+            this.$router.push('/')
+        }
+    },
+}
 </script>
 
 

@@ -33,18 +33,11 @@ let router = new Router({
             component: tForgotPass,
         },
         {
-            path: '/login:/forgot-pass/password-recovery',
+            path: '/login/forgot-pass/password-recovery',
             name: 't-password-recovery',
             component: tPasswordRecoveryItem,
         }, 
     ]
 });
-if(localStorage.getItem('test') === "1"){
-    router.push({ path: '/login' })
-}
-else{
-    localStorage.setItem('test', 1);
-    router.push({ path: '/sign-up' })
-}
-// console.log(router);
+
 export default router

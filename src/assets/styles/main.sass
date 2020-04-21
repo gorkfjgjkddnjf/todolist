@@ -1,14 +1,13 @@
 @import 'variable.sass'
-@import 't-header'
 @import '~bootstrap/scss/bootstrap'
 $material-icons-font-path: '~material-icons/iconfont/'
 @import '~material-icons/iconfont/material-icons.scss'
 body
-    background-color: #BAFFCD;
+    background-color: #BAFFCD
 .sign
     border-radius: 20px
-    background-color: #FFF;
-    margin: 130px 0;
+    background-color: #FFF
+
 .head-todo-list
     font-family: $todoListHeadFontFamily
     font-size:  $todoListHeadFontSize
@@ -36,7 +35,6 @@ body
 .invalid-login
 
 .main-item-head
-    margin-top: 40px;
     font-weight: $Font-weightBold
     font-size: 30px
 
@@ -47,8 +45,7 @@ label
 
 .link
     font-size: $mainFontSize
-    margin-bottom: 40px
-    margin-top: 25px
+
 .t-forgot-pass
     .row
         .sign
@@ -69,11 +66,6 @@ label
     display: flex
     align-items: center
     justify-content: center
-.form-group
-    margin-bottom: 52px
-    &:nth-child(3)
-        margin-bottom: 44px
-
         
 .select-head p, i
     &:hover
@@ -91,8 +83,18 @@ label
         cursor: pointer
         background: rgba(145, 172, 198, 0.4)
     
-
-
+.error
+    font-size: 14px
+    color: #E63131
+.header-title
+    display: flex
+    align-items: center
+    margin: 0
+    font-size: 39px
+    letter-spacing: 0.075em
+    color: #FFFFFF
+    font-family: $headerFontFamily
+    font-weight: bold
 // body, html
 //     height: 100%
 

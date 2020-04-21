@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import tHeader from './t-sign/t-header/t-header';
+import tHeader from './t-header/t-header';
 
 export default {
     name: "t-main-wrapper",
