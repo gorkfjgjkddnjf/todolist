@@ -2,16 +2,21 @@
     <div class="t-sign-up-item col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 px-0 px-sm-3">
         <h2 class="pl-3 main-item-head my-3 my-sm-4">Регистрация</h2>
         <form @submit.prevent="reg_user">
-            <div class="form-group mb-sm-4 col-12">
+            <div class="form-group mb-0 col-12">
                 <label for="username">Ваше имя</label> 
                 <input type="text" name="username" class="form-control" id="username" required v-model="name">
             </div>
-            <div class="form-group col-12">
+            <div class="mb-sm-4" v-if="ERRORS && error">
+                <div class="" v-if="ERRORS.name">
+                    <span class="error pl-3">{{ERRORS.name[0]}}</span>
+                </div>
+            </div>            
+            <div class="form-group mb-0 col-12">
                 <label for="email">Email</label> 
                 <input type="email" name="login" class="form-control" id="email" required v-model="email">
-                <div class="mb-sm-4" v-if="ERRORS">
+                <div class="mb-sm-4" v-if="ERRORS && error">
                     <div class="" v-if="ERRORS.email">
-                        <span class="error">Такой пользователь уже существует</span>
+                        <span class="error">{{ERRORS.email[0]}}</span>
                     </div>
                 </div>
             </div>
@@ -27,9 +32,12 @@
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="typeInput">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="typeInput">visibility</i>
             </div>
-            <div class="" v-if="ERRORS">
+            <div class="" v-if="ERRORS && error">
                 <div class="" v-if="ERRORS.password">
-                    <span class="error pl-3">Пароли не совпадают</span>
+                    <span class="error pl-3">{{ERRORS.password[0]}}</span>
+                </div>
+                <div class="" v-else>
+                    <span class="error pl-3">{{ERRORS.password_confirmation[0]}}</span>
                 </div>
             </div>
             <div class="row justify-content-center text-center mt-3 mt-sm-4 mx-0 link">
@@ -69,7 +77,8 @@ export default {
             password : "",
             password_confirmation : "",
             type: 'password',
-            visibility: false
+            visibility: false,
+            error: true
         }
     },
     computed: {
@@ -109,7 +118,8 @@ export default {
             this.name = ""
             this.email = ""
             this.password = ""
-            this.password_confirmation = ""            
+            this.password_confirmation = "" 
+            this.error = false           
         }
     },
 }

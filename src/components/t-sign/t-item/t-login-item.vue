@@ -12,9 +12,12 @@
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
             </div>
-            <div class="mb-4" v-if="ERRORS">
-                <div class="" v-if="ERRORS.message">
-                    <span class="error pl-3">Неверный логин или пароль</span>
+            <div class="mb-4" v-if="ERRORS && error">
+                <div v-if="ERRORS.message">
+                    <span class="error pl-3">{{ERRORS.message}}</span>
+                </div>
+                <div v-else>
+                    <span class="error pl-3 w-100">{{ERRORS[0].password[0]}}</span>
                 </div>
             </div>
             <div class="form-group my-4 col-12">
@@ -49,7 +52,8 @@ export default {
             typeInput: 'password',
             visibility: false,
             logEmail: "",
-            password: ""
+            password: "",
+            error: true
         }
     },
     computed: {
@@ -90,6 +94,7 @@ export default {
         refreshForm(){
             this.logEmail = ""
             this.password = ""
+            this.error = false
         }
     },
 }
