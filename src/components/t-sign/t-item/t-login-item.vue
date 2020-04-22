@@ -11,15 +11,17 @@
                 <input v-bind:type="typeInput" name="pass" class="form-control t-login-item__eye" id="pass" required v-model="password">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
+                
+                <div class="mb-4" v-if="ERRORS && error">
+                    <div v-if="ERRORS.message">
+                        <span class="error">{{ERRORS.message}}</span>
+                    </div>
+                    <div v-else>
+                        <span class="error">{{ERRORS[0].password[0]}}</span>
+                    </div>
+                </div>            
             </div>
-            <div class="mb-4" v-if="ERRORS && error">
-                <div v-if="ERRORS.message">
-                    <span class="error pl-3">{{ERRORS.message}}</span>
-                </div>
-                <div v-else>
-                    <span class="error pl-3 w-100">{{ERRORS[0].password[0]}}</span>
-                </div>
-            </div>
+
             <div class="form-group my-4 col-12">
                 <input type="submit" class="btn w-100 btn-sign" value="Вход">
             </div>
