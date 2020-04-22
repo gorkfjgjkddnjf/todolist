@@ -5,8 +5,15 @@ $material-icons-font-path: '~material-icons/iconfont/'
 body
     background-color: #BAFFCD
 .sign
-    border-radius: 20px
-    background-color: #FFF
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    display: flex
+    align-items: center
+    align-content: center
+    justify-content: center
 
 .head-todo-list
     font-family: $todoListHeadFontFamily
@@ -46,21 +53,6 @@ label
 .link
     font-size: $mainFontSize
 
-.t-forgot-pass
-    .row
-        .sign
-            max-width: 600px
-            width: 100%
-.t-sign-up-item
-    .needs-validation
-        .link
-            &:nth-child(5)
-                display: block;
-                text-align: center; 
-                max-width: 330px; 
-                width: 100%; 
-                margin: 0 auto 30px !important;;
-
 .select-head
     background: #91ACC6
     display: flex
@@ -95,7 +87,23 @@ label
     color: #FFFFFF
     font-family: $headerFontFamily
     font-weight: bold
-// body, html
-//     height: 100%
 
+.visibility
+    position: absolute
+    top: 50%
+    right: 8%
 
+@media (max-width: 576px)
+    .t-login-item, .t-sign-up-item, .t-forgot-pass-item
+        border-radius: 0px
+        height: 100%
+    .visibility
+        left: 83%
+    .tHeader
+        display: none
+    .sign
+        align-items: start
+
+@media (min-width: 1500px)
+    .visibility
+        left: 90% 

@@ -26,49 +26,53 @@ let store = new Vuex.Store({
      
     },
     actions: {
-        LOGIN_USER({commit}, user){
-        return axios('http://www.host1813334.hostland.pro/public/api/login',{
+      LOGIN_USER({commit}, user){
+        return new Promise((resolve, reject) => {
+          axios('http://www.host1813334.hostland.pro/public/api/login',{
             method: 'POST', data: user
-        })
-        .then((resp) => {
+          })
+          .then((resp) => {
             if(resp.data.success){
-                const token = resp.data.api_token
-                localStorage.setItem('token', token)
-                console.log(token)
-                commit('SET_USER', token)
+              const token = resp.data.api_token
+              localStorage.setItem('token', token)
+              commit('SET_USER', token)
+              resolve(resp)
             }
             else{
-                commit('GET_ERRORS', resp.data[0])
-          }
-        })
-        .catch((error) => {
+              commit('GET_ERRORS', resp.data)
+            }
+          })
+          .catch((error) => {
             localStorage.removeItem('token')
-            console.log(error);
-            return error
+            reject(error)
+          })
         })
       },
       REGISTER_USER({commit}, user){
-        return axios('http://www.host1813334.hostland.pro/public/api/user',{
+        return new Promise((resolve, reject) => {
+         axios('http://www.host1813334.hostland.pro/public/api/user',{
           method: 'POST', data: user
         })
         .then((resp) => {
             if(resp.data.success){
                 const user = resp.data.user
                 commit('ADD_USER', user)
+                resolve(resp)
             }
             else{
                 commit('GET_ERRORS', resp.data[0])
             }
         })
         .catch((error) => {
-          console.log(error);
-          return error
+          reject(error)
         })
+      })
       },
       LOGOUT({commit}){
         commit('LOGOUT')
         localStorage.removeItem('token')
       }
+    
       
     },
     getters: {

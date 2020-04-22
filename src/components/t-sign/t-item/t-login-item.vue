@@ -1,20 +1,24 @@
 <template>
-    <div class="t-login-item my-5">
-        <h2 class="pl-3 main-item-head mb-4">Авторизация</h2>
+    <div class="t-login-item col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 px-0 px-sm-3">
+        <h2 class="pl-3 main-item-head my-3 my-sm-4">Авторизация</h2>
         <form @submit.prevent="login_user">
-            <div class="form-group mb-4 col-12">
+            <div class="form-group mb-sm-4 col-12">
                 <label for="email">Email</label> 
-                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="logEmail" value = "Деда">
+                <input type="email" name="login" class="form-control" id="email" required v-model="logEmail" value = "Деда">
             </div>
-            <div class="form-group mb-4 col-12">
+            <div class="form-group col-12 mb-0">
                 <label for="pass">Пароль</label> 
-                <input v-bind:type="typeInput" name="pass" class="form-control form-control-lg t-login-item__eye" id="pass" required v-model="password">
+                <input v-bind:type="typeInput" name="pass" class="form-control t-login-item__eye" id="pass" required v-model="password">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
-                <small v-show="valid" class="invalid-login">Неверный логин или пароль</small>
+            </div>
+            <div class="mb-4" v-if="ERRORS">
+                <div class="" v-if="ERRORS.message">
+                    <span class="error pl-3">Неверный логин или пароль</span>
+                </div>
             </div>
             <div class="form-group my-4 col-12">
-                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Вход">
+                <input type="submit" class="btn w-100 btn-sign" value="Вход">
             </div>
             <div class="col-12">
                 <router-link :to="{name: 'forgot-pass'}">
@@ -25,7 +29,7 @@
             <div class="row justify-content-center mx-0 link">
                 <p class="t-login-item__text">Нет аккаунта?</p>
                 <router-link :to="{name: 'sign-up'}">
-                    <p class="">Регистрация</p>
+                    <p class="" @click="refreshForm">Регистрация</p>
                 </router-link>
             </div>
         </form>
@@ -76,7 +80,16 @@ export default {
                 password: this.password
             }
             this.LOGIN_USER(user)
-            this.$router.push('/')
+            .then(() => {
+                this.$router.push('/')
+                this.refreshForm()
+            })
+            .catch(error => console.log(error))
+
+        },
+        refreshForm(){
+            this.logEmail = ""
+            this.password = ""
         }
     },
 }
@@ -85,14 +98,13 @@ export default {
 
 <style lang="sass">
 .t-login-item
+    border-radius: 20px
+    background-color: #FFF
     &__hr
         border: 1px solid #C4C4C4
     &__text
         margin-right: 20px
 
-.visibility
-    position: absolute
-    top: 50%
-    left: 90%
+
 
 </style>

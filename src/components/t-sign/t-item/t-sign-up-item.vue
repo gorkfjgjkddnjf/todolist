@@ -1,53 +1,53 @@
 <template>
-    <div class="t-sign-up-item">
-        <h2 class="pl-3 main-item-head my-4">Регистрация</h2>
+    <div class="t-sign-up-item col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 px-0 px-sm-3">
+        <h2 class="pl-3 main-item-head my-3 my-sm-4">Регистрация</h2>
         <form @submit.prevent="reg_user">
-            <div class="form-group mb-4 col-12">
+            <div class="form-group mb-sm-4 col-12">
                 <label for="username">Ваше имя</label> 
-                <input type="text" name="username" class="form-control form-control-lg" id="username" required v-model="name">
+                <input type="text" name="username" class="form-control" id="username" required v-model="name">
             </div>
             <div class="form-group col-12">
                 <label for="email">Email</label> 
-                <input type="email" name="login" class="form-control form-control-lg" id="email" required v-model="email">
-                <div class="mb-4" v-if="ERRORS">
+                <input type="email" name="login" class="form-control" id="email" required v-model="email">
+                <div class="mb-sm-4" v-if="ERRORS">
                     <div class="" v-if="ERRORS.email">
-                        <span class="error">Пользователь такой электронной почтой уже существует</span>
+                        <span class="error">Такой пользователь уже существует</span>
                     </div>
                 </div>
             </div>
-            <div class="form-group mb-4 col-12">
+            <div class="form-group mb-sm-4 col-12">
                 <label for="pass">Пароль</label> 
-                <input v-bind:type="type" name="pass" class="form-control form-control-lg t-sign-up-item__eye" id="pass" required v-model="password">
+                <input v-bind:type="type" name="pass" class="form-control t-sign-up-item__eye" id="pass" required v-model="password">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="typeInput">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="typeInput">visibility</i>
             </div>
             <div class="form-group mb-0 col-12">
                 <label for="confirm-pass">Подтвердите пароль</label> 
-                <input v-bind:type="type" name="confirm-pass" class="form-control form-control-lg t-sign-up-item__eye" id="confirm-pass" required v-model ="password_confirmation">
+                <input v-bind:type="type" name="confirm-pass" class="form-control t-sign-up-item__eye" id="confirm-pass" required v-model ="password_confirmation">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="typeInput">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="typeInput">visibility</i>
             </div>
-            <div class="mb-4" v-if="ERRORS">
+            <div class="" v-if="ERRORS">
                 <div class="" v-if="ERRORS.password">
                     <span class="error pl-3">Пароли не совпадают</span>
                 </div>
             </div>
-            <div class="row justify-content-center text-center mx-0 link">
-                <div class="form-group col-8">
+            <div class="row justify-content-center text-center mt-3 mt-sm-4 mx-0 link">
+                <div class="form-group col-12 col-sm-8">
                     <p class="mb-0">Нажимая "Регистрация" Вы соглашаетесь с </p>
                     <router-link :to="{name: ''}">
-                        <p class="mx-2"> Условиями использования</p>
+                        <p class="mx-2 mb-0"> Условиями использования</p>
                     </router-link>
                 </div>
             </div>
-            <div class="form-group mb-4 col-12">
-                <input type="submit" class="btn w-100 btn-lg btn-sign" value="Регистрация">
+            <div class="form-group col-12">
+                <input type="submit" class="btn w-100 btn-sign" value="Регистрация">
             </div>
             <hr class="t-sign-up-item__hr">
             <div class="row justify-content-center mx-0 mb-4 link">
                 <p class="mx-2">Уже зарегестрированны?</p>
                 <router-link :to="{name: 'login'}">
-                    <p class="mx-2">Войти в систему</p>
+                    <p class="mx-2" @click="refreshForm">Войти в систему</p>
                 </router-link>
             </div>
         </form>
@@ -99,7 +99,17 @@ export default {
                 password_confirmation: this.password_confirmation
             }
             this.REGISTER_USER(user)
-            this.$router.push('/login')
+            .then(() => {
+                this.$router.push('/login')
+                this.refreshForm()
+            })
+            .catch(error => console.log(error))  
+        },
+        refreshForm(){
+            this.name = ""
+            this.email = ""
+            this.password = ""
+            this.password_confirmation = ""            
         }
     },
 }
@@ -108,12 +118,11 @@ export default {
 
 <style lang="sass">
 .t-sign-up-item
+    border-radius: 20px
+    background-color: #FFF
     &__hr
         border: 1px solid #C4C4C4
 
-.visibility
-    position: absolute
-    top: 50%
-    left: 90%
+
 
 </style>

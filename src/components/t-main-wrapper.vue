@@ -1,6 +1,6 @@
 <template>
     <div class="t-main-wrapper">
-        <tHeader/>
+        <tHeader class="tHeader"/>
         <keep-alive>
             <router-view />
         </keep-alive>
@@ -25,5 +25,6 @@ export default {
 
 
 <style lang="sass">
+
 
 </style>

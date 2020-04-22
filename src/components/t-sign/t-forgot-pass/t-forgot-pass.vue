@@ -1,9 +1,7 @@
 <template>
-    <div class="t-forgot-pass containet">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-6 shadow sign">
-                <tForgotPass/>
-            </div>
+    <div class="t-forgot-pass">
+        <div class="sign">
+            <tForgotPass/>
         </div>
     </div>
 

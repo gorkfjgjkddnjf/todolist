@@ -1,9 +1,7 @@
 <template>
-    <div class="t-login container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-6 shadow my-5 sign">
-                <tLoginItem/>
-            </div>
+    <div class="t-login">
+        <div class="sign">
+            <tLoginItem/>
         </div>
     </div>
 
