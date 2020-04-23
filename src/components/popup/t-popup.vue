@@ -13,7 +13,7 @@
                 <button class="btn w-100" id="No" @click="closePopup">Отментиь</button>
             </div>
             <div class="col-12 col-sm-5 col-md-3 ">
-                <button class="btn w-100" id="Yes" @click="deleteItem(index)">{{btnOk}}</button>
+                <button class="btn w-100" id="Yes" @click="confirm">{{btnOk}}</button>
             </div>
         </div>
 
@@ -31,27 +31,22 @@ export default {
             type: String,
             default: 'popupname'
         },
-        index:{
-            type:Number,
-            default: 0
-        }
     },
     data(){
         return{
 
         }
     },
-    computed:{
+    computed:{ 
 
     },
     methods:{
         closePopup(){
             this.$emit('closePopup')
         },
-        deleteItem(index){
-            this.$emit('deleteItem', index)
-        },
-
+        confirm(){
+            this.$emit('confirm')
+        }
     }
 }
 

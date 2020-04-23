@@ -93,6 +93,38 @@ label
     top: 50%
     right: 8%
 
+.list 
+    background: #ffffff
+    
+.todo-item
+    display: flex
+    justify-content: space-between
+    align-items: center
+    border-bottom: 1px solid rgba(196, 196, 196, 0.4)
+    font-size: 23px
+
+.edit-icon
+    display: flex
+    margin-right: 5px
+    align-items: center
+
+.todo-item-left
+    display: flex
+    align-items: center
+
+.todo-item-label
+    cursor: pointer
+    width: 100%
+
+
+.todo-item-edit
+    width: 100%
+    border: none
+    &:focus
+        outline: none
+
+
+
 @media (max-width: 576px)
     .t-login-item, .t-sign-up-item, .t-forgot-pass-item
         border-radius: 0px
