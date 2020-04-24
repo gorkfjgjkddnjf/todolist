@@ -1,5 +1,5 @@
 export default {
-    SET_USER: (state, token) =>{
+    SET_TOKEN: (state, token) =>{
         state.token = token
     },
     ADD_USER:(state, user) =>{
@@ -16,5 +16,11 @@ export default {
     },
     DELETE_TODO_LIST:(state, index) => {
         state.todoList.splice(index,1)
+    },
+    GET_USERS:(state, users) =>{
+        state.users = users
+    },
+    CREATE_TASK:(state, task) =>{
+        state.todoList.push(task)
     }
 }

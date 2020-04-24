@@ -2,5 +2,6 @@ export default {
     token: null,
     newUser: null,
     errors: null,
-    todoList: null
+    todoList: null,
+    newTask: null
 }

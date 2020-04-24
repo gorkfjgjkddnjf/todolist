@@ -15,8 +15,7 @@ export default {
                     if(token){
                         axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
                     }
-
-                    commit('SET_USER', token)
+                    commit('SET_TOKEN', token)
                     resolve(resp)
                 }
                 else{
@@ -83,5 +82,75 @@ export default {
     },
     DELETE_FROM_STATE({commit}, index){
         commit('DELETE_TODO_LIST', index)
+    },
+    GET_USERS({commit}){
+        return axios('http://www.host1813334.hostland.pro/public/api/user',{
+            method: "GET"
+        })
+        .then((users) =>{
+            commit('GET_USERS', users.data)
+        })
+    },
+    CREATE_TASK({commit}, task){
+        return new Promise((resolve, reject) => {
+            axios(`http://www.host1813334.hostland.pro/public/api/list`, {
+                method: 'POST', data: task
+            })        
+            .then((resp) => {
+                if(resp.data.success){
+                    commit('CREATE_TASK', task)
+                    resolve(resp)
+                }
+                else{
+                    commit('GET_ERRORS', resp.data[0])
+                    //reject(resp.data)
+                }
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })     
+    },
+    CHECK_SUBTASK({commit}, task_id){
+        return new Promise((resolve, reject) => {
+            axios(`http://www.host1813334.hostland.pro/public/api/task/ ${task_id}`, {
+                method: 'PUT'
+            })        
+            .then((resp) => {
+                commit('')
+                resolve(resp)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })  
+    },
+    DELETE_SUBTASK({commit}, task_id){
+        return new Promise((resolve, reject) => {
+            axios(`http://www.host1813334.hostland.pro/public/api/task/ ${task_id}`, {
+                method: 'DELETE'
+            })        
+            .then((resp) => {
+                commit('')
+                resolve(resp)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })        
+    },
+    EDIT_TODO({commit}, todo){
+        return new Promise((resolve, reject) => {
+            axios('http://www.host1813334.hostland.pro/public/api/list/update',{
+                method: 'POST', data: todo
+            })
+            .then((resp) => {
+                commit('')
+                resolve(resp)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })
     }
 }
