@@ -4,7 +4,7 @@
             <p @click="noVisible" class="py-2 mb-0">{{selected}}</p>            
             <i class="material-icons icon" v-if="!isOptionVisible" @click="noVisible">keyboard_arrow_down</i>
             <i class="material-icons icon" v-else @click="noVisible">keyboard_arrow_up</i>
-            <i class="material-icons shedule" id="add" @click="addTodo">add</i>
+            <i class="material-icons" id="add" @click="addTodo">add</i>
         </div>
         <div class="options" v-if="isOptionVisible">
             <div class="pl-4 option"                 
@@ -69,13 +69,9 @@ export default {
 
 
 <style lang="sass">
-// .options
-//     height: 12rem
-
 
 #add
     position: absolute
     right: 1.3rem   
-    color: #000000  
 
 </style>

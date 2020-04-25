@@ -58,7 +58,7 @@ export default {
                 method: 'GET'
             })        
             .then((resp) => {
-                commit('SET_TODO_LIST', resp.data)
+                commit('SET_TODO_LIST', resp.data[0])
                 resolve(resp)
             })
             .catch((error) => {
@@ -99,6 +99,26 @@ export default {
             .then((resp) => {
                 if(resp.data.success){
                     commit('CREATE_TASK', task)
+                    resolve(resp)
+                }
+                else{
+                    commit('GET_ERRORS', resp.data[0])
+                    //reject(resp.data)
+                }
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })     
+    },
+    CREATE_SUB_TASK({commit}, subtask){
+        return new Promise((resolve, reject) => {
+            axios(`http://www.host1813334.hostland.pro/public/api/task`, {
+                method: 'POST', data: subtask
+            })        
+            .then((resp) => {
+                if(resp.data.success){
+                    //commit('CREATE_SUB_TASK', subtask)
                     resolve(resp)
                 }
                 else{
