@@ -12,6 +12,9 @@ export default {
         state.token = ''
     },
     SET_TODO_LIST:(state, todoList) =>{
+        todoList.forEach(element => {
+            element.tasks.reverse()
+        });
         state.todoList = todoList
     },
     DELETE_TODO_LIST:(state, index) => {
@@ -25,7 +28,6 @@ export default {
     },
     CREATE_SUB_TASK:(state, subtask) =>{
         let index = subtask.list_index
-        console.log(subtask.list_index)
         state.todoList[index].tasks.unshift(subtask)
     }
 }

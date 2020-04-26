@@ -88,12 +88,12 @@
 
         
             <div class="" v-for="(todo, index) in fiterTask" :key="todo.id">
-                <div class="todo-item" >
+                <div class="todo-item">
                     <div class="todo-item-left" @click="showSubTask(index, todo)">
                         <div class="check" :class="{grey : todo.success == todo.every && todo.every != 0, green: todo.success != todo.every}"></div>
                         <div class="col-12">
                             <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.name}}</p>
-                            <input v-else class="todo-item-edit ml-2 py-2" type="text"
+                            <input v-else class="todo-item-edit ml-2 py-2" type="text" maxlength="50"
                                 v-model="todo.name" 
                                 @blur="doneEdit(todo)"
                                 @keyup.enter="doneEdit(todo)"
@@ -140,22 +140,22 @@
                     <div class="todo-item-left">
                         <input type="checkbox" v-model="tasks.mark" class="ml-3" @click="checkSubTask(tasks.id, todo)">
                         <p v-if="!tasks.editing" class="ml-2 mb-0 py-2 todo-item-label" :class="{completed : tasks.mark}">{{tasks.name}}</p>
-                        <input v-else class="todo-item-edit ml-2 py-2" type="text"
+                        <input v-else class="todo-item-edit ml-2 py-2" type="text" maxlength="50"
                             v-model="tasks.name" 
                             @blur="doneEdit(tasks)"
                             @keyup.enter="doneEdit(tasks)"
                             v-focus
                         >
-                        <i class="material-icons no-select" v-if="tasks.urgency == '1'">flag</i>
-                        <i class="material-icons no-urgency" v-if="tasks.urgency == '2'">flag</i>
-                        <i class="material-icons fast" v-if="tasks.urgency == '3'">flag</i>
-                        <i class="material-icons urgency" v-if="tasks.urgency == '4'">flag</i>
-                        <i class="material-icons very-urgency" v-if="tasks.urgency == '5'">flag</i>
                     </div>
                         
                     <div class="edit-icon">
                         <i class="material-icons shedule">schedule</i>
                         <p class="mb-0 date px-2">{{tasks.created_at}}</p>
+                        <i class="material-icons no-select" v-if="tasks.urgency == '1'">flag</i>
+                        <i class="material-icons no-urgency" v-if="tasks.urgency == '2'">flag</i>
+                        <i class="material-icons fast" v-if="tasks.urgency == '3'">flag</i>
+                        <i class="material-icons urgency" v-if="tasks.urgency == '4'">flag</i>
+                        <i class="material-icons very-urgency" v-if="tasks.urgency == '5'">flag</i>
                         <i class="material-icons edit" @click="editTodoItem(tasks)">edit</i>
                         <i class="material-icons close" @click="confirmDeleteTask(tasks)">close</i>
                     </div>
@@ -185,7 +185,7 @@ export default {
             task_id: null,
             listIndex: null,
             taskName: null,
-            todo: null,
+            todo: [],
             size: false,
             beforeEditName: null,
             beforeEditDes: null,
@@ -309,10 +309,12 @@ export default {
             })
         },
         showSubTask(index, todo){
-            this.isVisibleSubTask = !this.isVisibleSubTask
-            this.size = !this.size
-            this.subtask = this.TODO_LIST[index].tasks
+            if(index == this.listIndex || this.listIndex == null){
+                this.isVisibleSubTask = !this.isVisibleSubTask
+                this.size = !this.size
+            }
             this.todo = todo
+            this.subtask = this.TODO_LIST[index].tasks
             this.listIndex = index
             this.isVisibleItem1 = false
         },
@@ -396,7 +398,7 @@ export default {
                 description: this.newDescription,
             }
             this.CREATE_TASK(task)
-            if(this.newTask != null && this.newDescription != null){
+            .then(() => {
                 this.GET_TODO_LIST()
                 this.messages = `Задача "${this.newTask}" была успешно добавлена`
                 this.isVisiblePush = true
@@ -407,7 +409,7 @@ export default {
                 this.isCreateTaskVisible = false
                 this.error = false
                 this.hidePush()
-            }           
+            })     
         },
         newSubTaskAdd(){
             let subtask = {
@@ -419,11 +421,7 @@ export default {
             }
             this.CREATE_SUB_TASK(subtask)
             .then(() => {
-
                 this.GET_TODO_LIST()
-            })
-            if(this.newSubTask != null && this.urgency != null){
-
                 this.messages = `Подзадача "${this.newSubTask}" была успешно добавлена`
                 this.isVisiblePush = true
 
@@ -434,14 +432,13 @@ export default {
                 this.error = false
 
                 this.hidePush()
-            }
+            })
         },
         checkSubTask(id){
             this.CHECK_SUBTASK(id)
             .then(() => {
                 this.GET_TODO_LIST()
             })
-
         },
         isVisbleItem(isOptionVisible){
             this.isVisibleItem1 = isOptionVisible
