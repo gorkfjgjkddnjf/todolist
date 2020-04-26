@@ -1,5 +1,5 @@
 export default {
-    token: null,
+    token: localStorage.getItem('token') || '',
     newUser: null,
     errors: null,
     todoList: null,

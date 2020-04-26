@@ -4,14 +4,13 @@
         <form @submit.prevent="reg_user">
             <div class="form-group mb-0 col-12">
                 <label for="username">Ваше имя</label> 
-                <input type="text" name="username" class="form-control" id="username" required v-model="name">
-                
-                <div class="mb-sm-4" v-if="ERRORS && error">
+                <input type="text" name="username" class="form-control" id="username" required v-model="name">            
+            </div>
+                <div class="mb-sm-4 mx-3" v-if="ERRORS && error">
                     <div class="" v-if="ERRORS.name">
                         <span class="error">{{ERRORS.name[0]}}</span>
                     </div>
                 </div>  
-            </div>
           
             <div class="form-group mb-0 col-12">
                 <label for="email">Email</label> 
@@ -34,8 +33,9 @@
                 <input v-bind:type="type" name="confirm-pass" class="form-control t-sign-up-item__eye" id="confirm-pass" required v-model ="password_confirmation">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="typeInput">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="typeInput">visibility</i>
+            </div>
                 
-                <div class="" v-if="ERRORS && error">
+                <div class="mb-sm-4 mx-3" v-if="ERRORS && error">
                     <div class="" v-if="ERRORS.password">
                         <span class="error">{{ERRORS.password[0]}}</span>
                     </div>
@@ -43,8 +43,6 @@
                         <span class="error">{{ERRORS.password_confirmation[0]}}</span>
                     </div>
                 </div>
-            </div>
-
             <div class="row justify-content-center text-center mt-3 mt-sm-4 mx-0 link">
                 <div class="form-group col-12 col-sm-8">
                     <p class="mb-0">Нажимая "Регистрация" Вы соглашаетесь с </p>

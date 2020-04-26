@@ -2,6 +2,11 @@
 @import '~bootstrap/scss/bootstrap'
 $material-icons-font-path: '~material-icons/iconfont/'
 @import '~material-icons/iconfont/material-icons.scss'
+
+*
+    transition: .3s
+
+    
 body
     background-color: #BAFFCD
 .sign
@@ -121,6 +126,8 @@ label
 .todo-item-edit
     width: 100%
     border: none
+    background: #f8f8f8
+    border-bottom: 1px solid #c4c4c4
     &:focus
         outline: none
 
@@ -130,6 +137,27 @@ label
 .head-sub-task
     background: #45BE93
     color: white
+
+.shedule
+    font-size: 16px
+    color: grey
+
+.subtask
+    background: #f8f8f8 
+
+.no-select
+
+.no-urgency
+    color: #45BE93
+
+.fast
+    color: yelow
+
+.urgency
+    color: orange
+
+.very-urgency
+    color: red
 
 @media (max-width: 576px)
     .t-login-item, .t-sign-up-item, .t-forgot-pass-item

@@ -9,12 +9,10 @@ export default {
             .then((resp) => {
                 if(resp.data.success){
               
-                    const token = resp.data.api_token
+                    let token = resp.data.api_token
                     localStorage.setItem('token', token)  
-
-                    if(token){
-                        axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
-                    }
+                    axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+      
                     commit('SET_TOKEN', token)
                     resolve(resp)
                 }
@@ -97,6 +95,7 @@ export default {
                 method: 'POST', data: task
             })        
             .then((resp) => {
+                console.log(resp.data)
                 if(resp.data.success){
                     commit('CREATE_TASK', task)
                     resolve(resp)
@@ -117,8 +116,9 @@ export default {
                 method: 'POST', data: subtask
             })        
             .then((resp) => {
+                console.log(resp.data)
                 if(resp.data.success){
-                    //commit('CREATE_SUB_TASK', subtask)
+                    commit('CREATE_SUB_TASK', subtask)
                     resolve(resp)
                 }
                 else{
@@ -165,8 +165,30 @@ export default {
                 method: 'POST', data: todo
             })
             .then((resp) => {
-                commit('')
-                resolve(resp)
+                if(resp.data.success){
+                    resolve(resp)
+                }
+                else{
+                    commit('GET_ERRORS', resp.data[0])
+                }
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })
+    },
+    EDIT_TASK({commit}, task){
+        return new Promise((resolve, reject) => {
+            axios('http://www.host1813334.hostland.pro/public/api/task/update',{
+                method: 'POST', data: task
+            })
+            .then((resp) => {
+                if(resp.data.success){
+                    resolve(resp)
+                }
+                else{
+                    commit('GET_ERRORS', resp.data[0])
+                }
             })
             .catch((error) => {
                 reject(error)

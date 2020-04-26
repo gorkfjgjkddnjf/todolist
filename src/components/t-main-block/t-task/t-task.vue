@@ -1,5 +1,5 @@
 <template>
-    <div class="t-task px-0 mt-5">
+    <div class="t-task px-0 mt-5 row flex-md-nowrap">
 
         <transition name="animate">
             <p class="push" v-show="isVisiblePush">
@@ -16,7 +16,7 @@
 
         <popup v-if="isVisiblePopup" @closePopup="closePopup" @confirm="deleteSubTask" btnOk="Удалить">
             <template v-slot:head>
-                <h2 class="tt">Вы действительно хотите удалить "{{taskName}}" из списка "{{TODO_LIST[listIndex].name}}"</h2>
+                <h2 class="tt">Вы действительно хотите удалить "{{taskName}}" из списка ""{{TODO_LIST[listIndex].name}}"</h2>
             </template>
         </popup>
 
@@ -58,8 +58,14 @@
                 </div>
             </div>
             <div class="form-group text-left mx-md-4">
-                <label for="fast" class="pl-2">Это срочно?</label> 
-                <input type="text" name="title" class="form-control form-control-lg" id="fast" required v-model="urgency">
+                <label for="fast" class="pl-2">Выберите срочность</label> 
+                <select id="fast" class="form-control form-control-lg" required v-model="urgency">
+                    <option selected value="1">Не выбрано</option>
+                    <option value="2">Не срочно</option>
+                    <option value="3">Поторопись</option>
+                    <option value="4">Срочно</option>
+                    <option value="5">Очень срочно</option>
+                </select>
                 <div class="error" v-if="ERRORS && error">
                     <div class="" v-if="ERRORS.urgency">
                         <span class="error">{{ERRORS.urgency[0]}}</span>
@@ -68,78 +74,95 @@
             </div>
         </popup>        
 
-
-        <div class="main-section">
-            <div class="select">
-                <t-select
-                    :selected="selectedTASK"
-                    :options="options"
-                    @select="sortByStatus"
-                    @addTodo="addTodo"
-                />
+        <div class="list col-12 mr-2 px-0" :class="{'col-md-4' : size, 'col-md-12' : !size}">
+            <div class="main-section">
+                <div class="select">
+                    <t-select
+                        :selected="selectedTASK"
+                        :options="options"
+                        @select="sortByStatus"
+                        @addTodo="addTodo"
+                    />
+                </div>
             </div>
-        </div>
 
-        <div class="list">
+        
             <div class="" v-for="(todo, index) in fiterTask" :key="todo.id">
-                <div class="todo-item" @click="showSubTask(index)">
-                    <div class="todo-item-left">
+                <div class="todo-item" >
+                    <div class="todo-item-left" @click="showSubTask(index, todo)">
                         <div class="check" :class="{grey : todo.success == todo.every && todo.every != 0, green: todo.success != todo.every}"></div>
-                        <p class="ml-2 mb-0 py-2 todo-item-label">{{todo.name}}</p>
-                        <!-- <input v-else class="todo-item-edit ml-2 py-2" type="text"
-                            v-model="todo.name" 
-                            @keyup.enter="doneEdit"
-                        > -->
+                        <div class="col-12">
+                            <p v-if="!todo.editing" class="ml-2 mb-0 py-2 todo-item-label">{{todo.name}}</p>
+                            <input v-else class="todo-item-edit ml-2 py-2" type="text"
+                                v-model="todo.name" 
+                                @blur="doneEdit(todo)"
+                                @keyup.enter="doneEdit(todo)"
+                                v-focus
+                            >
+                            <div class="row edit-icon pl-4">
+                                <i class="material-icons shedule">schedule</i>
+                                <p class="mb-0 date px-2">{{todo.created_at}}</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="edit-icon">
-                        <i class="material-icons shedule">schedule</i>
-                        <p class="mb-0 date px-2">{{todo.created_at}}</p>
-                        <i class="material-icons edit">edit</i>
+                        <i class="material-icons edit" @click="editTodoItem(todo)">edit</i>
                         <i class="material-icons close" @click="confirmDeleteTodo(todo.id, index)">close</i>
                     </div>
                 </div> 
-
-                <div class="" v-show="isVisibleSubTask">
-                    
-                    <div class="head-sub-task text-center py-2">
-                        {{todo.name}}
-                    </div>
-                    <div class="description">
-                        <p class="ml-2 mb-0 py-2 todo-item-label">{{todo.description}}</p>
-                    </div>
-                    <div class="select">
-                        <t-select
-                            :selected="selected"
-                            @isvisble="isVisbleItem"
-                            @addTodo="addSubTask(todo.tasks[index].listt_id)"
-                        />
-                    </div>                
-                </div>               
-                    <div class="subtask">
-                        <div class="" v-for="(tasks) in subtask" :key="tasks.id" >
-
-                            <div class="todo-item" v-show="isVisibleItem1 && todo.id == tasks.listt_id">
-                                <div class="todo-item-left">
-                                    <input type="checkbox" v-model="tasks.mark" class="ml-3" @click="checkSubTask(tasks.id, todo)">
-                                    <p class="ml-2 mb-0 py-2 todo-item-label" :class="{completed : tasks.mark}">{{tasks.name}}</p>
-                                    <!-- <input v-else class="todo-item-edit ml-2 py-2" type="text"
-                                        v-model="todo.name" 
-                                        @keyup.enter="doneEdit"
-                                    > -->
-                                </div>
-                        
-                                <div class="edit-icon">
-                                    <i class="material-icons shedule">schedule</i>
-                                    <p class="mb-0 date px-2">{{todo.created_at}}</p>
-                                    <i class="material-icons edit">edit</i>
-                                    <i class="material-icons close" @click="confirmDeleteTask(tasks.id, index, tasks.name)">close</i>
-                                </div>
-                            </div>   
-                        </div>                                     
-                    </div>                    
             </div>
         </div>
+
+
+        <div class="col-8 subtask px-0 ml-2" v-if="isVisibleSubTask">
+                
+            <div class="head-sub-task text-center py-2">
+                {{todo.name}}
+            </div>
+
+            <div class="description">
+                <p class="mb-0 pl-2 py-2 todo-item-label">
+                    {{todo.description}}
+                </p>
+            </div>
+
+            <div class="select">
+                <t-select
+                    :selected="selected"
+                    @isvisble="isVisbleItem"
+                    @addTodo="addSubTask(todo.id)"
+                />
+            </div>                
+                
+            <div class="" v-for="(tasks) in subtask" :key="tasks.id" >                
+                <div class="todo-item" v-show="isVisibleItem1">
+                    <div class="todo-item-left">
+                        <input type="checkbox" v-model="tasks.mark" class="ml-3" @click="checkSubTask(tasks.id, todo)">
+                        <p v-if="!tasks.editing" class="ml-2 mb-0 py-2 todo-item-label" :class="{completed : tasks.mark}">{{tasks.name}}</p>
+                        <input v-else class="todo-item-edit ml-2 py-2" type="text"
+                            v-model="tasks.name" 
+                            @blur="doneEdit(tasks)"
+                            @keyup.enter="doneEdit(tasks)"
+                            v-focus
+                        >
+                        <i class="material-icons no-select" v-if="tasks.urgency == '1'">flag</i>
+                        <i class="material-icons no-urgency" v-if="tasks.urgency == '2'">flag</i>
+                        <i class="material-icons fast" v-if="tasks.urgency == '3'">flag</i>
+                        <i class="material-icons urgency" v-if="tasks.urgency == '4'">flag</i>
+                        <i class="material-icons very-urgency" v-if="tasks.urgency == '5'">flag</i>
+                    </div>
+                        
+                    <div class="edit-icon">
+                        <i class="material-icons shedule">schedule</i>
+                        <p class="mb-0 date px-2">{{tasks.created_at}}</p>
+                        <i class="material-icons edit" @click="editTodoItem(tasks)">edit</i>
+                        <i class="material-icons close" @click="confirmDeleteTask(tasks)">close</i>
+                    </div>
+                </div>   
+            </div>                                                
+        </div>
+        
     </div>
 
 </template>
@@ -162,6 +185,10 @@ export default {
             task_id: null,
             listIndex: null,
             taskName: null,
+            todo: null,
+            size: false,
+            beforeEditName: null,
+            beforeEditDes: null,
 
             isVisibleSubTask: false,
             isVisibleItem1: false,
@@ -230,7 +257,9 @@ export default {
             'CREATE_TASK',
             'CHECK_SUBTASK',
             'DELETE_SUBTASK',
-            'CREATE_SUB_TASK'
+            'CREATE_SUB_TASK',
+            'EDIT_TODO',
+            'EDIT_TASK'
         ]),
         closePopup(){
             this.isVisiblePopupDelete = false
@@ -244,23 +273,28 @@ export default {
             this.list_id = id 
             this.listIndex = index      
         },
-        confirmDeleteTask(id, index, name){
+        confirmDeleteTask(tasks){
             this.isVisiblePopup = true
-            this.task_id = id
-            this.taskName = name
-            this.listIndex = index
+            this.task_id = tasks.id
+            this.taskName = tasks.name
         },
         deleteTodoList(){
             let tmp = this.TODO_LIST[this.listIndex].name
             
             this.DELETE_TODO_LIST(this.list_id)
             this.DELETE_FROM_STATE(this.listIndex)
-            this.isVisiblePopupDelete = false
+            .then(()=>{
+                if(this.todo.id == this.list_id){
+                    this.size = false
+                    this.isVisibleSubTask = false
+                }
+                this.isVisiblePopupDelete = false
+                this.isVisiblePush = true
+                this.messages = `Задача "${tmp}" была успешно удалена`
 
-            this.isVisiblePush = true
-            this.messages = `Задача "${tmp}" была успешно удалена`
+                this.hidePush()  
+            })
 
-            this.hidePush()  
         },
         deleteSubTask(){
             this.DELETE_SUBTASK(this.task_id)
@@ -274,9 +308,13 @@ export default {
                 this.hidePush() 
             })
         },
-        showSubTask(index){
+        showSubTask(index, todo){
             this.isVisibleSubTask = !this.isVisibleSubTask
+            this.size = !this.size
             this.subtask = this.TODO_LIST[index].tasks
+            this.todo = todo
+            this.listIndex = index
+            this.isVisibleItem1 = false
         },
         hidePush(){
             let vm = this
@@ -294,21 +332,55 @@ export default {
             })
             this.selectedTASK = option.name
         },
-        editTodoItem(todo){
-            todo.editing = true
+        editTodoItem(item){
+            this.beforeEditName = item.name
+            this.beforeEditDes = item.description
+            item.editing = true
         },
-        doneEdit(todo){
+        doneEdit(item){
+            console.log(2)
+            if(item.name.length != 0 && item.name.trim().length != 0 && item.description.length != 0 && item.description.trim().length != 0){
+                if(item.urgency){
+                    let task = {
+                        id: item.id,
+                        name: item.name,
+                        description: item.description,
+                        urgency: item.urgency
+                    }
+                    this.EDIT_TASK(task)
+                    .then(() => {
+                        item.editing = false
+                        this.isVisiblePush = true
+                        this.messages = `Изменения успешно внесены`
+                        this.hidePush()
+                    })
+                    
+                }
+                else{
+                    let todo = {
+                        id: item.id,
+                        name: item.name,
+                        description: item.description
+                    }
+                    this.EDIT_TODO(todo)
+                    .then(() => {
+                        this.isVisiblePush = true
+                        item.editing = false
+                        this.messages = `Изменения успешно внесены`
+                        this.hidePush()
+                    })                
+                    return
+                }
+            } 
+            else {
+                item.editing = false
+                item.name = this.beforeEditName
+                item.description = this.beforeEditDes
 
-            todo.editing = false
-
-            this.isVisiblePush = true
-            this.messages = `Изменения успешно внесены`
-
-            this.hidePush()
-        },
-        cancelEdit(todo){
-            todo.title = this.beforeEdit
-            todo.editing = false
+                this.isVisiblePush = true
+                this.messages = `Изменения не были внесены`
+                this.hidePush()                
+            }
         },
         addTodo(){
             this.isCreateTaskVisible = true
@@ -316,7 +388,6 @@ export default {
         addSubTask(list_id){
             this.isCreateSubTaskVisible = true
             this.list_id = list_id
-
         },
         newTaskAdd(){
 
@@ -342,13 +413,16 @@ export default {
             let subtask = {
                 name: this.newSubTask,
                 listt_id: this.list_id,
-                urgency: this.urgency
+                description: 0,
+                urgency: this.urgency,
+                list_index: this.listIndex
             }
-            //console.log(this.newSubTask,this.urgency, this.list_id)
-            //console.log(subtask)
             this.CREATE_SUB_TASK(subtask)
-            if(this.newSubTask != null && this.urgency != null){
+            .then(() => {
+
                 this.GET_TODO_LIST()
+            })
+            if(this.newSubTask != null && this.urgency != null){
 
                 this.messages = `Подзадача "${this.newSubTask}" была успешно добавлена`
                 this.isVisiblePush = true
@@ -423,15 +497,16 @@ export default {
 
 .check
     min-width: 10px
-    height: 41px
+    height: 4.6rem
     background: white
 .date
     color: #c4c4c4
+    font-size: 16px
 
 .grey
-    background: grey !important
+    background: #9A9A9A 
 
 .green
-    background: green !important
+    background: #45BE93 
 
 </style>

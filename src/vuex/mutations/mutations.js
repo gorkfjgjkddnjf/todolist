@@ -23,8 +23,9 @@ export default {
     CREATE_TASK:(state, task) =>{
         state.todoList.push(task)
     },
-    // CREATE_SUB_TASK:(state, subtask) =>{
-    //     console.log(state.todoList, subtask)
-    //     state.todoList.tasks.push(subtask)
-    // }
+    CREATE_SUB_TASK:(state, subtask) =>{
+        let index = subtask.list_index
+        console.log(subtask.list_index)
+        state.todoList[index].tasks.unshift(subtask)
+    }
 }

@@ -25,6 +25,7 @@ export default {
 
 
 <style lang="sass">
+.t-main-wrapper
 
 
 </style>

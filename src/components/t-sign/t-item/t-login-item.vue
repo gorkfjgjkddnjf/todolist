@@ -2,25 +2,32 @@
     <div class="t-login-item col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 px-0 px-sm-3">
         <h2 class="pl-3 main-item-head my-3 my-sm-4">Авторизация</h2>
         <form @submit.prevent="login_user">
-            <div class="form-group mb-sm-4 col-12">
+            <div class="form-group mb-0 col-12">
                 <label for="email">Email</label> 
                 <input type="email" name="login" class="form-control" id="email" required v-model="logEmail" value = "Деда">
             </div>
+
+            <div class="mb-sm-4 mx-3" v-if="ERRORS && error">
+                <div class="" v-if="ERRORS[0].email">
+                    <span class="error">{{ERRORS[0].email[0]}}</span>
+                </div>
+            </div>
+
             <div class="form-group col-12 mb-0">
                 <label for="pass">Пароль</label> 
                 <input v-bind:type="typeInput" name="pass" class="form-control t-login-item__eye" id="pass" required v-model="password">
                 <i class="material-icons visibility" v-if="!visibility" v-on:click="type">visibility_off</i>
                 <i class="material-icons visibility" v-else v-on:click="type">visibility</i>
                 
-                <div class="mb-4" v-if="ERRORS && error">
+            </div>
+                <div class="mb-4 mx-3" v-if="ERRORS && error">
                     <div v-if="ERRORS.message">
                         <span class="error">{{ERRORS.message}}</span>
                     </div>
-                    <div v-else>
+                    <div v-if="ERRORS[0].password">
                         <span class="error">{{ERRORS[0].password[0]}}</span>
                     </div>
                 </div>            
-            </div>
 
             <div class="form-group my-4 col-12">
                 <input type="submit" class="btn w-100 btn-sign" value="Вход">
