@@ -7,6 +7,7 @@ export default {
                 method: 'POST', data: user
             })
             .then((resp) => {
+                console.log(resp.data)
                 if(resp.data.success){
               
                     let token = resp.data.api_token
@@ -80,6 +81,9 @@ export default {
     },
     DELETE_FROM_STATE({commit}, index){
         commit('DELETE_TODO_LIST', index)
+    },
+    DELETE_FROM_TODO({commit}, index){
+        commit('DELETE_FROM_TODO', index)
     },
     GET_USERS({commit}){
         return axios('http://www.host1813334.hostland.pro/public/api/user',{
@@ -194,5 +198,8 @@ export default {
                 reject(error)
             })
         })
+    },
+    DELETE_ERRORS({commit}){
+        commit('DELETE_ERRORS')
     }
 }

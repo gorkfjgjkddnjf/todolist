@@ -22,11 +22,16 @@ export default {
             });
   
         });
-        console.log(todoList)
         state.todoList = todoList
     },
     DELETE_TODO_LIST:(state, index) => {
         state.todoList.splice(index,1)
+    },
+    DELETE_FROM_TODO:(state, index) =>{
+        console.log(index)
+        state.todoList.forEach(element => {
+            element.tasks.splice(index, 1)
+        })
     },
     GET_USERS:(state, users) =>{
         state.users = users
@@ -37,5 +42,8 @@ export default {
     CREATE_SUB_TASK:(state, subtask) =>{
         let index = subtask.list_index
         state.todoList[index].tasks.unshift(subtask)
+    },
+    DELETE_ERRORS:(state) =>{
+        state.errors = null
     }
 }

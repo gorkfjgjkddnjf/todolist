@@ -7,11 +7,7 @@
                 <input type="email" name="login" class="form-control" id="email" required v-model="logEmail" value = "Деда">
             </div>
 
-            <div class="mb-sm-4 mx-3" v-if="ERRORS && error">
-                <div class="" v-if="ERRORS[0].email">
-                    <span class="error">{{ERRORS[0].email[0]}}</span>
-                </div>
-            </div>
+
 
             <div class="form-group col-12 mb-0">
                 <label for="pass">Пароль</label> 
@@ -24,7 +20,7 @@
                     <div v-if="ERRORS.message">
                         <span class="error">{{ERRORS.message}}</span>
                     </div>
-                    <div v-if="ERRORS[0].password">
+                    <div v-else>
                         <span class="error">{{ERRORS[0].password[0]}}</span>
                     </div>
                 </div>            

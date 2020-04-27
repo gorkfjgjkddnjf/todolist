@@ -131,7 +131,7 @@
                     <t-select :selected="selected" @isvisble="isVisbleItem" @addTodo="addSubTask(todo.id)" />
                 </div>
 
-                <div class="subtask" v-for="(tasks) in subtask" :key="tasks.id" v-show="isVisibleItem1">
+                <div class="subtask" v-for="(tasks, index) in subtask" :key="tasks.id" v-show="isVisibleItem1">
                     <div class="todo-item">
                         
                         <div class="col-7 todo-item-left pl-0">
@@ -151,7 +151,7 @@
                             <i class="material-icons urgency" v-if="tasks.urgency == '4'">flag</i>
                             <i class="material-icons very-urgency" v-if="tasks.urgency == '5'">flag</i>
                             <i class="material-icons edit" @click="editTodoItem(tasks)">edit</i>
-                            <i class="material-icons close" @click="confirmDeleteTask(tasks)">close</i>
+                            <i class="material-icons close" @click="confirmDeleteTask(tasks, index)">close</i>
                         </div>
                     </div>
                 </div>
@@ -194,6 +194,7 @@
                 isVisibleSubTask: false,
                 isVisibleItem1: false,
                 isCreateSubTaskVisible: false,
+                tasksIndex: null,
                 newSubTask: null,
                 urgency: null,
                 subtask: [],
@@ -268,7 +269,8 @@
                 'DELETE_SUBTASK',
                 'CREATE_SUB_TASK',
                 'EDIT_TODO',
-                'EDIT_TASK'
+                'EDIT_TASK',
+                'DELETE_FROM_TODO'
             ]),
             closePopup() {
                 this.isVisiblePopupDelete = false
@@ -282,10 +284,12 @@
                 this.list_id = id
                 this.listIndex = index
             },
-            confirmDeleteTask(tasks) {
+            confirmDeleteTask(tasks, index) {
                 this.isVisiblePopup = true
                 this.task_id = tasks.id
                 this.taskName = tasks.name
+                this.tasksIndex = index
+                console.log(index)
             },
             deleteTodoList() {
                 let tmp = this.TODO_LIST[this.listIndex].name
@@ -308,6 +312,7 @@
             deleteSubTask() {
                 this.DELETE_SUBTASK(this.task_id)
                     .then(() => {
+                        this.DELETE_FROM_TODO(this.tasksIndex)
                         this.GET_TODO_LIST()
                         this.isVisiblePopup = false
 
