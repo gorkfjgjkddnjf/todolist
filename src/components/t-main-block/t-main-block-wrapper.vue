@@ -1,15 +1,12 @@
 <template>
     <div class="t-main-block-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
+
                     <tTask/>
-                </div>
+
                 <!-- <div class="col-12 col-md-8 mt-5">
                     <tSubTask/>
                 </div> -->
-            </div>           
-        </div>
+
     </div>
 
 </template>

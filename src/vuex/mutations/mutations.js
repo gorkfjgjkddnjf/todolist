@@ -12,9 +12,17 @@ export default {
         state.token = ''
     },
     SET_TODO_LIST:(state, todoList) =>{
+        let editDes = false
         todoList.forEach(element => {
             element.tasks.reverse()
+            element.des = editDes
+            element.created_at = element.created_at.substr(0,16)
+            element.tasks.forEach(item => {
+                item.created_at = item.created_at.substr(0,16)
+            });
+  
         });
+        console.log(todoList)
         state.todoList = todoList
     },
     DELETE_TODO_LIST:(state, index) => {
