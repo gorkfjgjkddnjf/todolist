@@ -16,7 +16,7 @@
 
         <popup v-if="isVisiblePopup" @closePopup="closePopup" @confirm="deleteSubTask" btnOk="Удалить">
             <template v-slot:head>
-                <h2 class="tt">Вы действительно хотите удалить "{{taskName}}" из списка ""{{TODO_LIST[listIndex].name}}"
+                <h2 class="tt">Вы действительно хотите удалить "{{taskName}}" из списка "{{TODO_LIST[listIndex].name}}"
                 </h2>
             </template>
         </popup>
@@ -290,6 +290,7 @@
                 this.taskName = tasks.name
                 this.tasksIndex = index
                 console.log(index)
+                console.log(this.todo)
             },
             deleteTodoList() {
                 let tmp = this.TODO_LIST[this.listIndex].name
@@ -310,9 +311,13 @@
 
             },
             deleteSubTask() {
+                let task = {
+                    listIndex: this.listIndex,
+                    index: this.tasksIndex
+                }
                 this.DELETE_SUBTASK(this.task_id)
                     .then(() => {
-                        this.DELETE_FROM_TODO(this.tasksIndex)
+                        this.DELETE_FROM_TODO(task)
                         this.GET_TODO_LIST()
                         this.isVisiblePopup = false
 

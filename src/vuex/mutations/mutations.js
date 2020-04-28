@@ -28,10 +28,7 @@ export default {
         state.todoList.splice(index,1)
     },
     DELETE_FROM_TODO:(state, index) =>{
-        console.log(index)
-        state.todoList.forEach(element => {
-            element.tasks.splice(index, 1)
-        })
+        state.todoList[index.listIndex].tasks.splice(index.index,1)
     },
     GET_USERS:(state, users) =>{
         state.users = users

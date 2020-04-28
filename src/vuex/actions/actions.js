@@ -82,8 +82,8 @@ export default {
     DELETE_FROM_STATE({commit}, index){
         commit('DELETE_TODO_LIST', index)
     },
-    DELETE_FROM_TODO({commit}, index){
-        commit('DELETE_FROM_TODO', index)
+    DELETE_FROM_TODO({commit}, task){
+        commit('DELETE_FROM_TODO', task)
     },
     GET_USERS({commit}){
         return axios('http://www.host1813334.hostland.pro/public/api/user',{
