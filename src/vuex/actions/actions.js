@@ -65,13 +65,13 @@ export default {
             })
         })
     },
-    DELETE_TODO_LIST({commit}, list_id){
+    DELETE_TODO_LIST({commit}, list){
         return new Promise((resolve, reject) => {
-            axios(`http://www.host1813334.hostland.pro/public/api/list/ ${list_id}`, {
+            axios(`http://www.host1813334.hostland.pro/public/api/list/ ${list.id}`, {
                 method: 'DELETE'
             })        
             .then((resp) => {
-                commit('')
+                commit('DELETE_TODO_LIST', list.index)
                 resolve(resp)
             })
             .catch((error) => {
@@ -81,9 +81,6 @@ export default {
     },
     DELETE_FROM_STATE({commit}, index){
         commit('DELETE_TODO_LIST', index)
-    },
-    DELETE_FROM_TODO({commit}, task){
-        commit('DELETE_FROM_TODO', task)
     },
     GET_USERS({commit}){
         return axios('http://www.host1813334.hostland.pro/public/api/user',{
@@ -149,13 +146,13 @@ export default {
             })
         })  
     },
-    DELETE_SUBTASK({commit}, task_id){
+    DELETE_SUBTASK({commit}, task){
         return new Promise((resolve, reject) => {
-            axios(`http://www.host1813334.hostland.pro/public/api/task/ ${task_id}`, {
+            axios(`http://www.host1813334.hostland.pro/public/api/task/ ${task.id}`, {
                 method: 'DELETE'
             })        
             .then((resp) => {
-                commit('')
+                commit('DELETE_FROM_TODO', task)
                 resolve(resp)
             })
             .catch((error) => {

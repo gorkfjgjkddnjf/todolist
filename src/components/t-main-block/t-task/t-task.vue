@@ -103,7 +103,7 @@
                         <i class="material-icons shedule">schedule</i>
                         <p class="mb-0 date px-2">{{todo.created_at}}</p>
                         <i class="material-icons edit" @click="editTodoItem(todo)">edit</i>
-                        <i class="material-icons close" @click="confirmDeleteTodo(todo.id, index)">close</i>
+                        <i class="material-icons close" @click="confirmDeleteTodo(todo, index)">close</i>
                     </div>
                 </div>
             </div>
@@ -279,53 +279,52 @@
                 this.isCreateSubTaskVisible = false
                 this.error = false
             },
-            confirmDeleteTodo(id, index) {
+            confirmDeleteTodo(item, index) {
                 this.isVisiblePopupDelete = true
-                this.list_id = id
-                this.listIndex = index
+                this.list_id = item.id
+                this.listIndex = index,
+                this.taskName = item.name
             },
             confirmDeleteTask(tasks, index) {
                 this.isVisiblePopup = true
                 this.task_id = tasks.id
                 this.taskName = tasks.name
                 this.tasksIndex = index
-                console.log(index)
-                console.log(this.todo)
             },
             deleteTodoList() {
-                let tmp = this.TODO_LIST[this.listIndex].name
+                let list = {
+                    id: this.list_id,
+                    index: this.listIndex
+                }
 
-                this.DELETE_TODO_LIST(this.list_id)
-                this.DELETE_FROM_STATE(this.listIndex)
-                    .then(() => {
-                        if (this.todo.id == this.list_id) {
-                            this.size = false
-                            this.isVisibleSubTask = false
-                        }
-                        this.isVisiblePopupDelete = false
-                        this.isVisiblePush = true
-                        this.messages = `Задача "${tmp}" была успешно удалена`
+                this.DELETE_TODO_LIST(list)
+                .then(() => {
+                    if (this.todo.id == this.list_id) {
+                        this.size = false
+                        this.isVisibleSubTask = false
+                    }
+                    this.isVisiblePopupDelete = false
+                    this.isVisiblePush = true
+                    this.messages = `Задача "${this.taskName}" была успешно удалена`
 
-                        this.hidePush()
-                    })
-
+                    this.hidePush()
+                })
             },
             deleteSubTask() {
                 let task = {
                     listIndex: this.listIndex,
-                    index: this.tasksIndex
+                    index: this.tasksIndex,
+                    id: this.task_id
                 }
-                this.DELETE_SUBTASK(this.task_id)
-                    .then(() => {
-                        this.DELETE_FROM_TODO(task)
-                        this.GET_TODO_LIST()
-                        this.isVisiblePopup = false
+                this.DELETE_SUBTASK(task)
+                .then(() => {
+                    this.isVisiblePopup = false
 
-                        this.isVisiblePush = true
-                        this.messages = `Подзадача "${this.taskName}" была успешно удалена`
+                    this.isVisiblePush = true
+                    this.messages = `Подзадача "${this.taskName}" была успешно удалена`
 
-                        this.hidePush()
-                    })
+                    this.hidePush()
+                })
             },
             showSubTask(index, todo) {
                 if (index == this.listIndex || this.listIndex == null) {
